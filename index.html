@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" ng-app="myApp">
+<html lang="en" data-ng-app="myApp">
 
 <head>
 
@@ -162,87 +162,8 @@
                     </div>
  <!--  End of Jacob part 23/2   -->   
 
-         <div class="col-md-9">
+        <div data-ng-view=""></div>
 
-                <div class="thumbnail">
-                    <img class="img-responsive" src="images/academy.png" alt="">
-                    <div class="caption-full">
-                
-                        <h4 class="underLine4">Academy Rating and Review </h4>
-
-                        <p>In this web site you can <span style="font-weight: bold">Rank & Review</span> courses in your academy.</p>
-            
-                        <p> <span style="font-weight: bold">Pay attention!</span> </p>
-                        <p>Every rank which you do can insult or hurt someone, so please pay attention to your ranking.</p>
-                       <p>Try to be gantle because behaid every rank that you did sit a humen with feeling.</p>
-                    </div>
-            <!--     <div class="ratings">
-                        <p class="pull-right">3 reviews</p>
-                        <p>
-                            <span class="glyphicon glyphicon-star"></span>
-                            <span class="glyphicon glyphicon-star"></span>
-                            <span class="glyphicon glyphicon-star"></span>
-                            <span class="glyphicon glyphicon-star"></span>
-                            <span class="glyphicon glyphicon-star-empty"></span>
-                            4.0 stars
-                        </p>
-                    </div> -->
-                </div>
-
-                <div class="well">
-
-                    <div class="text-left">
-                        <h4 class="underLine4">Instruction</h4>
-                    </div>
-
-                    <p><span class="underLine4">First step:</span> <br> You need choose how meny stars you want to give this course related to the subject, for example:</p>
-
-                
-                     
-
-                    <div class="row ">
-                        <div class="col-md-12">
-                        <p style="font-style:italic "   >Course defficulty</p>
-                            <span  class="glyphicon glyphicon-star"></span>
-                            <span class="glyphicon glyphicon-star"></span>
-                            <span class="glyphicon glyphicon-star"></span>
-                            <span class="glyphicon glyphicon-star"></span>
-                            <span class="glyphicon glyphicon-star-empty"></span>
-                        </div>
-                        <span class="col-md-12" style="font-size:9px ">   easy <span style="margin-left:47px">hard</span> </span>
-                    </div>
-
-                    <hr>
-
-                    <p><span class="underLine4">Second step:</span> <br> You need to write few words about the course, for example:</p>
-                     <div class="row ">
-                     <div class="col-md-12">
-                        <p style="font-style:italic "   >Few words:</p>
-                    <textarea style="font-style: italic" placeholder="It was really good course!!!" cols="30" rows="3" disabled=""></textarea>
-                     </div> </div>
-                    <hr>
-
-                    <p><span class="underLine4">final step:</span> <br> You need to choose if to be Annonymos or not, for example:</p>
-                     <div class="row "> 
-   
-                    
-                      <input style="margin-left: 12px" type="checkbox" checked="checked" disabled> Annonymos   
-                       <span style="margin-left: 25px">Or:</span> 
-                        <input style="margin-left: 12px" type="checkbox" disabled> Annonymos
-                      <span style="margin-left: 10px">Enter name: </span>
-                      <input style="margin-left: 12px" type="text" value="Liran" disabled>
-                      <br>
-                      <br>
-                      <span style="margin-left: 12px"><span style="font-style: italic">Now push on Rank:</span> </span>
-                        <button style="margin-left:25px" type="button" class="btn btn-primary btn-lg active">Rank</button>
-
-                     </div>
-
-
-          
-                </div>
-
-            </div>
 
         </div>
 
@@ -266,9 +187,11 @@
     <!-- /.container -->
 
      
-    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular-route.js"></script>
+         <script src="js/angular.min.js"></script>
+    <script src="js/angular-route.min.js"></script>
     <!-- jQuery -->
     <script src="js/jquery.js"></script>
+
 
     <!-- Bootstrap Core JavaScript -->
     <script src="js/bootstrap.min.js"></script>
