@@ -1,30 +1,23 @@
-var myApp = angular.module('myApp', []);
+var myApp = angular.module('myApp', ['ngRoute']);
 
 
+
+myApp.controller('mainControler', function($scope){
+
+
+	
+	//console.log($scope);
+});
 myApp.config(function ($routeProvider){
 
 	$routeProvider
 	.when('/',
 	{
 		controller: 'mainControler',
-		templateUrl: 'mainView.html'
+		templateUrl: 'partials/mainView.html'
 	})
-		.when('/RankAcademy',
-	{
-		controller: 'mainControler',
-		templateUrl: 'partials/RankView.html'
-	})
-		.otherwise({ redirectTo: ''})
+		.otherwise({ redirectTo: '/'})
 
 });
 
 
-myApp.controller('mainControler', function($scope){
-	$scope.name = 'dude';
-	$scope.getName = function(){
-		return 'dude';
-	}
-
-	
-	//console.log($scope);
-});
