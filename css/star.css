@@ -13,5 +13,27 @@
 .Qestion{
   font-style: italic;
   color: rgb(32, 125, 255);
-  
+}
+
+.Qheader{
+	text-decoration: underline;
+	font-weight: bold;
+
+}
+
+.Qinternal{
+	margin-left: 10px;
+	color: black;
+}
+
+.rankBtn{
+	margin-right : auto;
+	margin-left : auto;
+
+}
+
+.detailsAcademy{
+	color : rgb(32, 125, 255);
+	text-decoration: underline;
+	font-weight: bold;
 }
