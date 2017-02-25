@@ -1,15 +1,26 @@
 var myApp = angular.module('myApp', ['ngRoute', 'firebase']);
 
-var AcademySelected = '';
-var FacultySelected = '';
-var CourseSelected = '';
-var SemesterSelected = '';
-var LecturerSelected = '';
+var AcademySelected = 'Select Academy';
+var FacultySelected = 'Select Faculty';
+var CourseSelected = 'Select Course';
+var SemesterSelected = 'Select Semester';
+var LecturerSelected = 'Select Lecturer';
 
 var jQuerySelectedIdList = ['#dropdownAcademy', '#dropdownFaculty', '#dropdownCourse', '#dropdownSem', '#dropdownLec' ];
 var selectedToAddList = ['Select Academy', 'Select Faculty', 'Select Course', 'Select Semester','Select Lecturer'];
 var snapshotAllSemesterSave;
 var listOfAllLecturer = [];
+var listIdInput = ['c1','c2','c3','c4','c5'];
+0
+ function initVarSelected(i){
+ 	switch (i)
+ 	{
+ 		case 1: FacultySelected = 'Select Faculty'; break;
+ 		case 2: CourseSelected = 'Select Course'; break;
+ 		case 3: SemesterSelected = 'Select Semester'; break;
+ 		case 4: LecturerSelected = 'Select Lecturer'; break;
+ 	}
+ }
 
  function initAllDropDown(index)
  {
@@ -19,6 +30,7 @@ var listOfAllLecturer = [];
 	    .remove()
 	    .end()
 	    .append('<option>'+ selectedToAddList[i] +'</option>');
+	    initVarSelected(i);
 	}
  }
 
@@ -172,21 +184,49 @@ myApp.controller('mainControler', function($scope,$location){
 
 	$scope.moveToRankAcademy = function(view){
 		//alert(view);
-		$location.path(view);
+		if (FacultySelected != 'Select Faculty' && AcademySelected != 'Select Academy')
+		{
+			$location.path(view);
+		}
+		else {
+			alert("You must select Academy and Faculty");
+		}
+		
 	};
 
 	$scope.moveToViewAcademy = function(view){
-		$location.path(view);
+		if (FacultySelected != 'Select Faculty' && AcademySelected != 'Select Academy')
+		{
+			$location.path(view);
+		}
+		else {
+			alert("You must select Academy and Faculty");
+		}
 	};
 
 	$scope.moveToRankLecturer = function(view){
 		//alert(view);
-		$location.path(view);
+		if (CourseSelected != 'Select Course' && FacultySelected != 'Select Faculty' && AcademySelected != 'Select Academy'
+			&& SemesterSelected != 'Select Semester' && LecturerSelected != 'Select Lecturer')
+		{
+			$location.path(view);
+		}
+		else {
+			alert("You must select Academy, Faculty, Course, Semester and Lecturer");
+		}
+		
 	};
 
 	$scope.moveToViewLecturer = function(view){
 		//alert(view);
-		$location.path(view);
+		if (CourseSelected != 'Select Course' && FacultySelected != 'Select Faculty' && AcademySelected != 'Select Academy'
+			&& SemesterSelected != 'Select Semester' && LecturerSelected != 'Select Lecturer')
+		{
+			$location.path(view);
+		}
+		else {
+			alert("You must select Academy, Faculty, Course, Semester and Lecturer");
+		}
 	};
 
 });
@@ -194,7 +234,17 @@ myApp.controller('mainControler', function($scope,$location){
 myApp.controller('RankLecturerCont', function($scope,$location){
 
 	$scope.RankClickLecturer = function(view){
-		//alert(view);
+		alert($('input[name="gender1"]:checked').val());
+
+		/*
+		var myId = document.getElementById("q3").value;
+		var inputId = 'c';
+		for (var i = 0 ; i >= 4; i++) {
+			if (myId.elements[i].checked == true){
+				alert(i);
+			}
+		}
+		*/
 		//$location.path(view);
 	};
 
@@ -207,6 +257,7 @@ myApp.controller('AcademyControler', function($scope){
 	
 	//console.log($scope);
 });
+
 myApp.config(function ($routeProvider, $locationProvider){
 	$routeProvider
 	.when('/',
