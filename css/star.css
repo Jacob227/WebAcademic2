@@ -1,0 +1,17 @@
+#imagerank{
+  width: 380px;
+  height: 120px;
+}
+
+#headerPage{
+  font-style: italic;
+  margin-left: 140px;
+  font-size: 60px;
+  color:rgb(32, 125, 255);
+}
+
+.Qestion{
+  font-style: italic;
+  color: rgb(32, 125, 255);
+  
+}

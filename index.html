@@ -17,6 +17,9 @@
     <!-- Custom CSS -->
     <link href="css/shop-item.css" rel="stylesheet">
 
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.12.2/css/bootstrap-select.min.css">
+
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
     <!--[if lt IE 9]>
@@ -29,7 +32,7 @@
 <body>
 
     <!-- Navigation -->
-    <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+    <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation" data-ng-controller="mainControler">
         <div class="container">
             <!-- Brand and toggle get grouped for better mobile display -->
             <div class="navbar-header">
@@ -39,7 +42,7 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <a class="navbar-brand" href="#">Academy R & R</a>
+                <a class="navbar-brand" data-ng-click="navAcademyCont('/')">Academy R & R</a>
             </div>
             <!-- Collect the nav links, forms, and other content for toggling -->
             <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
@@ -75,44 +78,25 @@
             </div>
 -->
  <!--  Jacob part 23/2   -->              
-                    <div class="col-sm-3 col-xs-12">
+                    <div class="col-sm-3 col-xs-12" data-ng-controller="mainControler">
                         <div class="panel panel-primary">
                         <div class="panel-heading"> Choose academy/Faculty</div>
                             <div class="panel-body">
-                            <div class="dropdown">
-                                  <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
-                                    Dropdown
-                                    <span class="caret"></span>
-                                  </button>
-                                  <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
-                                    <li><a href="#">Action</a></li>
-                                    <li><a href="#">Another action</a></li>
-                                    <li><a href="#">Something else here</a></li>
-                                    <li role="separator" class="divider"></li>
-                                    <li><a href="#">Separated link</a></li>
-                                  </ul>
-                                </div>
-                            </div>
-                              <div class="panel-body">
-                            <div class="dropdown">
-                                  <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
-                                    Dropdown
-                                    <span class="caret"></span>
-                                  </button>
-                                  <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
-                                    <li><a href="#">Action</a></li>
-                                    <li><a href="#">Another action</a></li>
-                                    <li><a href="#">Something else here</a></li>
-                                    <li role="separator" class="divider"></li>
-                                    <li><a href="#">Separated link</a></li>
-                                  </ul>
-                                </div>
+                                <select class="selectpicker" data-live-search="true" data-style="btn-info" id= "dropdownAcademy">
+                                    <option>Select Academy</option>
+                                </select>
 
                             </div>
-                            <div class="container">
+                              <div class="panel-body">
+                                <select class="selectpicker" data-live-search="true" data-style="btn-info" id= "dropdownFaculty">
+                                    <option>Select Faculty</option>
+                                </select>
+
+                            </div>
+                            <div class="container" >
                             <div class="row">
-                                <a href="#" class="btn btn-primary"> Rank </a>
-                                <a href="#" class="btn btn-primary" id="firstBut"> View </a>
+                                <a id="RankAcademyBut" class="btn btn-primary" data-ng-click="moveToRankAcademy('RankAcademy')"> Rank </a>
+                                <a class="btn btn-primary" id="firstBut" data-ng-click="moveToViewAcademy('ViewAcademyRaiting')"> View </a>
                             </div>
                             </div>
                         </div>
@@ -121,40 +105,26 @@
                         <div class="panel panel-primary">
                         <div class="panel-heading"> Choose Lecturer/course</div>
                             <div class="panel-body">
-                            <div class="dropdown">
-                                  <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
-                                    Dropdown
-                                    <span class="caret"></span>
-                                  </button>
-                                  <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
-                                    <li><a href="#">Action</a></li>
-                                    <li><a href="#">Another action</a></li>
-                                    <li><a href="#">Something else here</a></li>
-                                    <li role="separator" class="divider"></li>
-                                    <li><a href="#">Separated link</a></li>
-                                  </ul>
-                                </div>
+                                <select class="selectpicker" data-live-search="true" data-style="btn-info" id= "dropdownCourse">
+                                    <option>Select Course</option>
+                                </select>
                             </div>
                             <div class="panel-body">
-                            <div class="dropdown">
-                                  <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
-                                    Dropdown
-                                    <span class="caret"></span>
-                                  </button>
-                                  <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
-                                    <li><a href="#">Action</a></li>
-                                    <li><a href="#">Another action</a></li>
-                                    <li><a href="#">Something else here</a></li>
-                                    <li role="separator" class="divider"></li>
-                                    <li><a href="#">Separated link</a></li>
-                                  </ul>
-                                </div>
+                                <select class="selectpicker" data-live-search="true" data-style="btn-info" id= "dropdownSem">
+                                  <option>Select Semester</option>
+                                </select>
+                            </div>
+
+                              <div class="panel-body">
+                                <select class="selectpicker" data-live-search="true" data-style="btn-info" id= "dropdownLec">
+                                  <option>Select Lecturer</option>
+                                </select>
                             </div>
 
                             <div class="container">
                             <div class="row">
-                                <a href="#" class="btn btn-primary"> Rank </a>
-                                <a href="#" class="btn btn-primary" id="firstBut"> View </a>
+                                <a class="btn btn-primary" id="RankLecturerBut"  data-ng-click="moveToRankLecturer('RankLecturer')"> Rank 2</a>
+                                <a  class="btn btn-primary" id="firstBut" data-ng-click="moveToViewLecturer('ViewLecturerRaiting')"> View </a>
                             </div>
                             </div>
                             
@@ -186,16 +156,47 @@
     </div>
     <!-- /.container 
 
-
-<script src="js/angular.min.js"></script>
- <script src="js/angular-route.min.js"></script>-->
-
     <!-- jQuery -->
     <script src="js/jquery.js"></script>
 
 
+<!-- Latest compiled and minified JavaScript -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.12.2/js/bootstrap-select.min.js"></script>
 
-    <script src="http://code.jquery.com/jquery-2.0.3.min.js"></script>
+<!-- (Optional) Latest compiled and minified JavaScript translation files -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.12.2/js/i18n/defaults-*.min.js"></script>
+
+<script src="js/angular.min.js"></script>
+ <script src="js/angular-route.min.js"></script>-->
+
+<!-- AngularJS  -->
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.1/angular.min.js"></script> 
+
+<!-- Firebase -->
+<script src="https://www.gstatic.com/firebasejs/3.6.6/firebase.js"></script>
+
+<!-- AngularFire -->
+<script src="https://cdn.firebase.com/libs/angularfire/2.3.0/angularfire.min.js"></script>
+
+<script src="https://www.gstatic.com/firebasejs/3.6.10/firebase.js"></script>
+<script>
+  // Initialize Firebase
+  var config = {
+    apiKey: "AIzaSyCr9cEjEN7MzbIrlMI7qcIlKusX0ISpfr4",
+    authDomain: "webacademy-9d124.firebaseapp.com",
+    databaseURL: "https://webacademy-9d124.firebaseio.com",
+    storageBucket: "webacademy-9d124.appspot.com",
+    messagingSenderId: "601428818844"
+  };
+  firebase.initializeApp(config);
+</script>
+
+
+
+
+
+
+   <!-- <script src="http://code.jquery.com/jquery-2.0.3.min.js"></script>  -->
     <script src="http://code.angularjs.org/1.2.20/angular.min.js"></script>
     <script src="http://code.angularjs.org/1.2.20/angular-route.js"></script>
     <script src="http://code.angularjs.org/1.2.13/angular-cookies.js"></script>
