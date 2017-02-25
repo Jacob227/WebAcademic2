@@ -5,13 +5,16 @@
 <div class="col-md-9">
 
                <div class="thumbnail" style="border-radius: 25px">
-               <span id="headerPage">	Course/Lecturer Rank</span>
+               <span id="headerPage">Academy/Faculty Rank</span>
                   <img id="imagerank" class="img-responsive " src="images/rating.jpg" alt="">
                     <div class="caption-full">
+
+                    <p class="detailsAcademy">Academy: </p>
+                    <p class="detailsAcademy">Faculty: </p>
 						<hr>
 <!--First Q-->
 
-					<p class="Qestion">Course Level:<br>How much effort you need to do to get high grade?</p>
+					<p class="Qestion" ><span class="Qheader">1.Course Level:</span><br><span class="Qinternal"> How much effort you need to do to get high grade?</span></p>
 
 						<span style="margin-left:60px"><span style="color:blue">1</span></span>
 						<span style="margin-left:70px"><span style="color:blue">2</span></span>
@@ -35,7 +38,7 @@
                 		<hr>
 
 <!--Second Q-->
-					<p class="Qestion">Lecturer attitude:<br>Does the lecturer reveals willingness to help to students?Does the lecturer answer questions in class?</p>
+					<p class="Qestion"><span class="Qheader">2.Lecturer attitude:</span><br><span class="Qinternal">Does the lecturer reveals willingness to help to students?Does the lecturer answer questions in class?</span></p>
 
 						<span style="margin-left:60px"><span style="color:blue">1</span></span>
 						<span style="margin-left:70px"><span style="color:blue">2</span></span>
@@ -60,7 +63,7 @@
 
 <!--third Q-->
 
-					<p class="Qestion">Lecturer Motivation<br>There are meny lecturers who do not invest properly in teaching and not ready to come to the lecture. This parameter indicateson the ability of the lecturer to transfer educational material clearly.</p>
+					<p class="Qestion"><span class="Qheader">3.Lecturer Motivation:</span><br><span class="Qinternal">There are meny lecturers who do not invest properly in teaching and not ready to come to the lecture. This parameter indicateson the ability of the lecturer to transfer educational material clearly.</span></p>
 
 
 						<span style="margin-left:60px"><span style="color:blue">1</span></span>
@@ -82,7 +85,7 @@
                 		          <hr>
 
 <!--Forth Q-->
-					<p class="Qestion">Doest the lecturer interesting?<br>What is the interest level in lectuers?Does the lecturer transfer the educational material in an interesting or boring way?</p>
+					<p class="Qestion"><span class="Qheader">4.Does the lecturer interesting?</span><br><span class="Qinternal">What is the interest level in lectuers?Does the lecturer transfer the educational material in an interesting or boring way?</span></p>
 
 
 						<span style="margin-left:60px"><span style="color:blue">1</span></span>
@@ -105,28 +108,31 @@
                 		<span style="margin-left:250px "><span style="font-size: 10px"><span style="color: blue">Very Hard</span></span></span>
                 		              		<hr>
 
-<!--fifth Q-->
+<!--few words-->
 
-							<p class="Qestion">Few words:</p>
+							<p class="Qestion"><span class="Qheader">Few words:</span></p>
 
 							<div class="form-group">
-							  <textarea class="form-control" rows="5" id="comment"></textarea>
+							  <textarea class="form-control" rows="4" id="comment"></textarea>
 							</div>
 
 							<div class="row">
-							<div class="col-md-9"> 	
+								
 
-							<input style="margin-left: 12px" type="checkbox" checked="checked" id="AnnonymosCheck" onChange="check(this)"> Annonymos	
+							<input style="margin-left: 12px" type="checkbox" checked="checked" id="AnnonymosCheck" onChange="check(this)"><span class="Qestion"> Annonymos	</span> 
+
 								<span style="display: none" id="Ename" >
-									<span style="margin-left: 12px"> Enter Name:</span> <input style="margin-left: 12px" type="text" >
+									<span style="margin-left: 12px" class="questions"><span style="color: rgb(32, 125, 255)"> Enter Name:</span></span> <input style="margin-left: 12px" type="text" >
 								</span>
+							
+							
+
 							</div>
-								<a style="margin-right: 12px" id="RankAcademyBut" class="btn btn-primary"> 
+							<hr>
+							<span style="margin-left: 300px">
+								<a id="RankAcademyBut"  class="btn btn-primary"> 
 									Rank The Faculty
-
-								</a>
-
-							</div>
+								</a></span>
                     </div>
 
                 </div>
