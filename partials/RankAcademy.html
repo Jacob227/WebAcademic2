@@ -7,7 +7,7 @@
                <div class="thumbnail" style="border-radius: 25px">
                <span id="headerPage">Academy/Faculty Rank</span>
                   <img id="imagerank" class="img-responsive " src="images/rating.jpg" alt="">
-                    <div class="caption-full">
+                    <div class="caption-full" data-ng-controller="RankLecturerCont">
 
                     <p class="detailsAcademy">Academy: </p>
                     <p class="detailsAcademy">Faculty: </p>
@@ -130,7 +130,7 @@
 							</div>
 							<hr>
 							<span style="margin-left: 300px">
-								<a id="RankAcademyBut"  class="btn btn-primary"> 
+								<a id="RankAcademyBut"  class="btn btn-primary" data-ng-click="RankClickLecturer('RankClickLecturer')"> 
 									Rank The Faculty
 								</a></span>
                     </div>
