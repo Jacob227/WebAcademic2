@@ -1,0 +1,16 @@
+#tableA{
+	 border-width: 2px;
+	 border-color: rgb(32, 125, 255);
+}
+
+#FrameViewAcadmy{
+	width: 900px;
+	border-radius: 25px;
+}
+
+#headerPageW{
+  font-style: italic;
+  margin-left: 190px;
+  font-size: 60px;
+  color:rgb(32, 125, 255);
+}
