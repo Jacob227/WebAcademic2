@@ -4,18 +4,20 @@
 <div class="row ">
 <div class="col-md-9">
 
-               <div class="thumbnail" style="border-radius: 25px">
+               <div class="thumbnail" style="border-radius: 25px" >
                <span id="headerPage">	Academy/Faculty Rank</span>
                   <img id="imagerank" class="img-responsive " src="images/rating.jpg" alt="">
-                    <div class="caption-full" data-ng-controller="RankLecturerCont">
+                    <div class="caption-full">
 
-                    <div data-ng-controller="mainControler">
-                    	<p class="detailsAcademy" id="detailsAcademyId" >Academy: </p>
-                    	<p class="detailsAcademy" id="detailsFacultyId">Faculty: </p>
+                    <div class="adddd" data-ng-controller="mainControler">
+                    	<span class="detailsAcademy" id="detailsAcademyId" >Academy:</span> <span id="detailsAcademyId1" style="color:black"></span>
+                    		<br>
+                    	<span class="detailsAcademy" id="detailsFacultyId">Faculty:</span><span id="detailsFacultyId1" style="color:black"></span>
                     </div>
 						<hr>
 <!--First Q-->
-
+					
+					<div class="controllerLec" data-ng-controller="RankLecturerCont" >
 					<p class="Qestion" ><span class="Qheader">1.How difficult in your academic?</span><br><span class="Qinternal"> There are faculties which sit on the lawn all day long, while other places have to "sweat" to get the degree.</span></p>
 
 						<span style="margin-left:60px"><span style="color:blue">1</span></span>
@@ -163,8 +165,8 @@
 								<a id="RankAcademyBut"  class="btn btn-primary" data-ng-click="RankClickLecturer('RankClickLecturer')"> 
 									Rank The Faculty
 								</a></span>
-                    </div>
-
+                    	</div>
+					</div>
                 </div>
 
 
@@ -181,6 +183,7 @@
        		EN.style.display= 'block';
        }
 }
+
 </script>
 
 </div>

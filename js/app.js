@@ -175,10 +175,12 @@ var loadDataFromDB = function() {
 loadDataFromDB();
 
 
-myApp.controller('mainControler', function($scope,$location){
+myApp.controller('mainControler', function($scope,$location,$http){
 
+	//alert("hiiii");
 	$scope.navAcademyCont = function(view){
 		//alert(view);
+
 		$location.path(view);
 	};
 
@@ -187,6 +189,11 @@ myApp.controller('mainControler', function($scope,$location){
 		if (FacultySelected != 'Select Faculty' && AcademySelected != 'Select Academy')
 		{
 			$location.path(view);
+			document.getElementById("detailsAcademyId1").innerHTML = ' ' + AcademySelected;
+			document.getElementById("detailsFacultyId1").innerHTML = ' ' + FacultySelected;
+			//var FacultyItem = document.getElementById('detailsAcademyId').text;
+			//document.getElementById('detailsAcademyId').text = FacultyItem + " " + FacultySelected;
+			
 		}
 		else {
 			alert("You must select Academy and Faculty");
