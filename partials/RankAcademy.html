@@ -9,10 +9,11 @@
                   <img id="imagerank" class="img-responsive " src="images/rating.jpg" alt="">
                     <div class="caption-full">
 
-                    <div class="adddd" data-ng-controller="mainControler">
-                    	<span class="detailsAcademy" id="detailsAcademyId" >Academy:</span> <span id="detailsAcademyId1" style="color:black"></span>
+                    <div class="detailsAcademy" data-ng-controller="mainControler">
+                    	<span class="detailsAcademy" id="detailsAcademyId" >Academy: </span> <span id="detailsAcademyId1" style="color:black"></span>
                     		<br>
-                    	<span class="detailsAcademy" id="detailsFacultyId">Faculty:</span><span id="detailsFacultyId1" style="color:black"></span>
+                    	<span class="detailsAcademy" id="detailsFacultyId">Faculty: </span><span id="detailsFacultyId1" style="color:black"></span>
+                    	<div ng-init="initDetailsAcademy()"></div>
                     </div>
 						<hr>
 <!--First Q-->
@@ -28,7 +29,7 @@
 
                 		
           				<form >
-							 <input style="margin-left:60px" type="radio" name="gender1" value="1" checked> 
+							 <input style="margin-left:60px" type="radio" id="ch1" name="gender1" value="1" checked> 
  							 <input style="margin-left:60px" type="radio" name="gender1" value="2"> 
   							 <input style="margin-left:60px" type="radio" name="gender1" value="3"> 
   							 <input style="margin-left:60px" type="radio" name="gender1" value="4"> 
@@ -54,7 +55,7 @@
 
                 		
           				<form >
-							 <input style="margin-left:60px" type="radio" name="gender2" value="1" checked> 
+							 <input style="margin-left:60px" type="radio" id="ch1" name="gender2" value="1" checked> 
  							 <input style="margin-left:60px" type="radio" name="gender2" value="2"> 
   							 <input style="margin-left:60px" type="radio" name="gender2" value="3"> 
   							 <input style="margin-left:60px" type="radio" name="gender2" value="4"> 
@@ -80,7 +81,7 @@
 						<span style="margin-left:65px"><span style="color:blue">5</span></span>
     		
           				<form >
-							 <input style="margin-left:60px" type="radio" name="gender3" value="1" checked> 
+							 <input style="margin-left:60px" type="radio" id="ch1" name="gender3" value="1" checked> 
  							 <input style="margin-left:60px" type="radio" name="gender3" value="2"> 
   							 <input style="margin-left:60px" type="radio" name="gender3" value="3"> 
   							 <input style="margin-left:60px" type="radio" name="gender3" value="4"> 
@@ -104,7 +105,7 @@
 
                 		
           				<form >
-							 <input style="margin-left:60px" type="radio" name="gender4" value="1" checked> 
+							 <input style="margin-left:60px" type="radio" id="ch1" name="gender4" value="1" checked> 
  							 <input style="margin-left:60px" type="radio" name="gender4" value="2"> 
   							 <input style="margin-left:60px" type="radio" name="gender4" value="3"> 
   							 <input style="margin-left:60px" type="radio" name="gender4" value="4"> 
@@ -129,11 +130,11 @@
 
                 		
           				<form >
-							 <input style="margin-left:60px" type="radio" name="gender" value="1" checked> 
- 							 <input style="margin-left:60px" type="radio" name="gender" value="2"> 
-  							 <input style="margin-left:60px" type="radio" name="gender" value="3"> 
-  							 <input style="margin-left:60px" type="radio" name="gender" value="4"> 
-  							 <input style="margin-left:60px" type="radio" name="gender" value="5"> 
+							 <input style="margin-left:60px" type="radio" id="ch1" name="gender5" value="1" checked> 
+ 							 <input style="margin-left:60px" type="radio" name="gender5" value="2"> 
+  							 <input style="margin-left:60px" type="radio" name="gender5" value="3"> 
+  							 <input style="margin-left:60px" type="radio" name="gender5" value="4"> 
+  							 <input style="margin-left:60px" type="radio" name="gender5" value="5"> 
 						</form>
 
 						
@@ -145,7 +146,7 @@
 							<p class="Qestion"><span class="Qheader">Few words:</span></p>
 
 							<div class="form-group">
-							  <textarea class="form-control" rows="4" id="comment"></textarea>
+							  <textarea class="form-control" rows="4" id="commentFewWord"></textarea>
 							</div>
 
 							<div class="row">
@@ -154,7 +155,7 @@
 							<input style="margin-left: 12px" type="checkbox" checked="checked" id="AnnonymosCheck" onChange="check(this)"><span class="Qestion"> Annonymos	</span> 
 
 								<span style="display: none" id="Ename" >
-									<span style="margin-left: 12px" class="questions"><span style="color: rgb(32, 125, 255)"> Enter Name:</span></span> <input style="margin-left: 12px" type="text" >
+									<span style="margin-left: 12px" class="questions"><span style="color: rgb(32, 125, 255)"> Enter Name:</span></span> <input style="margin-left: 12px" type="text" id="textName">
 								</span>
 							
 							
@@ -162,7 +163,7 @@
 							</div>
 							<hr>
 							<span style="margin-left: 300px">
-								<a id="RankAcademyBut"  class="btn btn-primary" data-ng-click="RankClickLecturer('RankClickLecturer')"> 
+								<a id="RankAcademyBut"  class="btn btn-primary" data-ng-click="RankClickLecturer('RankClickLecturer')">
 									Rank The Faculty
 								</a></span>
                     	</div>
