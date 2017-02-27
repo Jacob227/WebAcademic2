@@ -102,7 +102,7 @@ var database;
 }
 
 var loadDataFromDB = function() {
-	alert("in loadDataFromDB");
+	//alert("in loadDataFromDB");
 	 database = firebase.database().ref().child('Academy');
 	//var e  = document.getElementById("dropdownAcademy");
 	database.once("value", function(snapshot){
@@ -203,6 +203,12 @@ myApp.controller('mainControler', function($scope,$location,$http){
 		document.getElementById("detailsSemesterId2").innerHTML = ' ' + SemesterSelected;
 		document.getElementById("detailsLecturerId2").innerHTML = ' ' + LecturerSelected;
 		document.getElementById("detailsCourseId2").innerHTML = ' ' + CourseSelected;
+		$('input:radio[id=ch1]').prop('checked', true);
+		$('#commentFewWord').val("");
+		$('input:checkbox[id=AnnonymosCheck]').prop('checked', true);
+		var EN =  document.getElementById('Ename');
+		EN.style.display='none';
+		$('#textName').val("");
 		initPageLecturerRank = true;
 	}
 
@@ -268,7 +274,7 @@ myApp.controller('mainControler', function($scope,$location,$http){
 
 myApp.controller('RankLecturerCont', function($scope,$location){
 
-	$scope.RankClickLecturer = function(view){
+	$scope.RankClickAcademy = function(view){
 
 		var academy_difficulty1 = parseInt($('input[name="gender1"]:checked').val());
 		var students_char1 =  parseInt($('input[name="gender2"]:checked').val());
@@ -321,6 +327,58 @@ myApp.controller('RankLecturerCont', function($scope,$location){
 
 	};
 
+	$scope.RankClickLecturer = function(view){
+
+		var course_level1 = parseInt($('input[name="gender1"]:checked').val());
+		var attitude_lecturer_student1 =  parseInt($('input[name="gender2"]:checked').val());
+		var ability_to_teach1 =  parseInt($('input[name="gender3"]:checked').val());
+		var teacher_interesting1 =  parseInt($('input[name="gender4"]:checked').val());
+
+		var FawWords = $('#commentFewWord').val();
+		//alert(typeof academy_difficulty1);
+		var userName = '';
+		var annonymos1 = true;
+		if ($('#AnnonymosCheck').is(":checked")){
+			userName = 'Annonymos_' + Math.floor((Math.random() * 100000) + 1);
+		} else { //TODO - check if the user is already exist in DB 
+			userName = $('#textName').val();
+			annonymos1 = false;
+		}
+		var today = new Date();
+		var dd = today.getDate();
+		var mm = today.getMonth()+1; //January is 0!
+		var yyyy = today.getFullYear();
+
+		if(dd<10) {
+		    dd='0'+dd
+		} 
+
+		if(mm<10) {
+		    mm='0'+mm
+		} 
+
+		today = dd+'-'+mm+'-'+yyyy;
+		//alert(today);
+
+		var LecturerRank = {
+			course_level: course_level1,
+			attitude_lecturer_student : attitude_lecturer_student1,
+			ability_to_teach : ability_to_teach1,
+			teacher_interesting : teacher_interesting1,
+			date : today,
+			annonymos : annonymos1,
+			few_words : FawWords
+		};
+
+		var newDBref = database.child(AcademySelected + '/Faculty/' + FacultySelected + '/Course/' + 
+			CourseSelected + '/' + SemesterSelected + '/Lecturer/' + LecturerSelected + 
+			'/Rating').push();
+		newDBref.set(LecturerRank);
+		alert("Your ranking has beed sent");
+		$location.path('/');
+
+	};
+
 
 });
 
@@ -357,6 +415,11 @@ myApp.config(function ($routeProvider, $locationProvider){
 		{
 		controller: 'mainControler',
 		templateUrl: 'partials/ViewAcademyRaiting.html'
+		})
+	.when('/AddLecCourse',
+		{
+		controller: 'AddLecCont',
+		templateUrl: 'partials/AddCourseLecturer.html'
 		})
 		.otherwise({ redirectTo: '/'});
 
