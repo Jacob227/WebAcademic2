@@ -9,14 +9,23 @@
                   <img id="imagerank" class="img-responsive " src="images/rating.jpg" alt="">
                     <div class="caption-full">
 
-                    <p class="detailsAcademy">Academy: </p>
-                    <p class="detailsAcademy">Faculty: </p>
-                    <p class="detailsAcademy">Semster: </p>
-                    <p class="detailsAcademy">Lecturer: </p>
-                    <p class="detailsAcademy">Course: </p>
-						<hr>
-<!--First Q-->
 
+                    <div class="detailsAcademy" data-ng-controller="mainControler">
+                    	<span class="detailsAcademy"  >Academy:</span> <span id="detailsAcademyId2" style="color:black"></span>
+                    		<br>
+                    	<span class="detailsAcademy" >Faculty:</span><span id="detailsFacultyId2" style="color:black"></span>
+                    		<br>
+                    	 <span class="detailsAcademy" >Semster:</span><span id="detailsSemesterId2" style="color:black"></span>
+                    	 	<br>
+                    	 <span class="detailsAcademy" >Lecturer:</span><span id="detailsLecturerId2" style="color:black"></span>
+                    	 	<br>
+                    	 <span class="detailsAcademy" >Course:</span><span id="detailsCourseId2" style="color:black"></span>
+                    	 	<br>
+                    	 	<br>
+                    	 <div ng-init="initDetailsLecturer()"></div>
+                    </div>
+<!--First Q-->
+					<div class="controllerLec" data-ng-controller="RankLecturerCont" >
 					<p class="Qestion" ><span class="Qheader">1.Course Level:</span><br><span class="Qinternal"> How much effort you need to do to get high grade?</span></p>
 
 						<span style="margin-left:60px"><span style="color:blue">1</span></span>
@@ -137,7 +146,7 @@
 									Rank The Faculty
 								</a></span>
                     </div>
-
+                    </div>
                 </div>
 
 
