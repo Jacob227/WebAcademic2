@@ -13,6 +13,7 @@ var listOfAllLecturer = [];
 var database;
 
  function initVarSelected(i){
+ 	//alert(i);
  	switch (i)
  	{
  		case 1: FacultySelected = 'Select Faculty'; break;
@@ -174,16 +175,37 @@ var loadDataFromDB = function() {
 
 loadDataFromDB();
 
+function sleep (time) {
+  return new Promise((resolve) => setTimeout(resolve, time));
+}
+
 var initPageAcademyRank = false;
 var initPageLecturerRank = false;
+var initPageLecturerView = false;
+var initPageAcademyView = false;
+
+function initAllPages(){
+	 initPageAcademyRank = false;
+	 initPageLecturerRank = false;
+	 initPageLecturerView = false;
+	 initPageAcademyView = false;
+}
+
 myApp.controller('mainControler', function($scope,$location,$http){
 
 	//alert("hiiii");
+	$scope.moveToPath = function(view){
+		//alert(view);
+
+		$location.path(view);
+	};
+
 	$scope.navAcademyCont = function(view){
 		//alert(view);
 
 		$location.path(view);
 	};
+
 
 	$scope.initDetailsAcademy = function () {
 		document.getElementById("detailsAcademyId1").innerHTML = ' ' + AcademySelected;
@@ -212,6 +234,104 @@ myApp.controller('mainControler', function($scope,$location,$http){
 		initPageLecturerRank = true;
 	}
 
+	var waitFinish = 0;
+	$scope.initDetailsAvgTableAcademy = function () {
+
+		var table = document.getElementById("tableA");
+		var rowCount = table.rows.length; while(--rowCount) table.deleteRow(rowCount); 
+		waitFinish = 0;
+		rankListAcademt = [];
+		var avgAcademyDiff = 0, avgFacultySec = 0, avgSocial = 0, avgUnion = 0, avgStudentChar = 0;
+		var indexC = 0;
+		database.child(AcademySelected + '/Faculty/' + FacultySelected + '/Rating_faculty').once("value", function(snapshot){
+			var numOfChild = snapshot.numChildren();
+			//alert(numOfChild);
+			
+			//var row = table.insertRow(numOfChild);
+			snapshot.forEach(function(childSnapshot) {
+
+				rankListAcademt.push(childSnapshot);
+				//alert("innn");
+				avgAcademyDiff += childSnapshot.val().academy_difficulty;
+				avgFacultySec += childSnapshot.val().faculty_secretary;
+				avgSocial += childSnapshot.val().social_life;
+				avgUnion += childSnapshot.val().student_union;
+				avgStudentChar += childSnapshot.val().students_char;
+				indexC++;
+				//var row = table.insertRow(indexC);
+				var row = table.insertRow(indexC);
+				row.insertCell(0).innerHTML = indexC;
+				if (childSnapshot.val().annonymos == true || childSnapshot.val().rank_name == "") {
+					row.insertCell(1).innerHTML = "    -";
+				} else {
+
+					row.insertCell(1).innerHTML = childSnapshot.val().rank_name;
+				}
+				
+				row.insertCell(2).innerHTML = childSnapshot.val().date;
+				row.insertCell(3).innerHTML = childSnapshot.val().academy_difficulty;
+				row.insertCell(4).innerHTML = childSnapshot.val().students_char;
+				row.insertCell(5).innerHTML = childSnapshot.val().social_life;
+				row.insertCell(6).innerHTML = childSnapshot.val().faculty_secretary;
+				row.insertCell(7).innerHTML = childSnapshot.val().student_union;
+				row.insertCell(8).innerHTML = childSnapshot.val().few_words;
+				/*
+				childSnapshot.forEach(function(childSnapshotSem) {
+					switch (indexCh){
+						case 0: avgAcademyDiff += childSnapshotSem.val
+					}
+
+				});	
+				*/
+
+			});
+			waitFinish = 1;
+		});
+
+
+		sleep(3000).then(() => {
+
+	    	if (waitFinish) {
+	    		document.getElementById("detailsAcademyId3").innerHTML = ' ' + AcademySelected;
+				document.getElementById("detailsFacultyId3").innerHTML = ' ' + FacultySelected;
+				document.getElementById("detailsdiffId3").innerHTML = ' ' + (avgAcademyDiff / indexC).toFixed(2) ;
+				document.getElementById("detailscharacterId3").innerHTML = ' ' + (avgStudentChar / indexC).toFixed(2)   ;
+				document.getElementById("detailsSocialId3").innerHTML = ' ' + (avgSocial / indexC).toFixed(2) ;
+				document.getElementById("detailssecretaryId3").innerHTML = ' ' + (avgFacultySec / indexC).toFixed(2) ;
+				document.getElementById("detailsunionId3").innerHTML = ' ' + (avgUnion / indexC).toFixed(2) ;
+			}
+			
+
+		});
+		$("#progressTimer").show();
+		$("#progressTimer").progressTimer({
+		    timeLimit: 3.5,
+		    warningThreshold: 10,
+		    baseStyle: 'progress-bar-warning',
+		    warningStyle: 'progress-bar-danger',
+		    completeStyle: 'progress-bar-info',
+		    onFinish: function() {
+		        console.log("I'm done");
+		        $("#progressTimer").hide();
+		    }
+		});
+		
+/*
+		var i = 100;
+		var counterBack = setInterval(function(){
+		  i--;
+		  if (i > 0){
+		    $('.progress-bar').css('width', i+'%');
+		  } else {
+		    clearInterval(counterBack);
+		  }
+		  
+		}, 20);
+		*/
+
+		initPageAcademyView = true;
+	}
+
 	$scope.moveToRankAcademy = function(view){
 		//alert(view);
 		if (FacultySelected != 'Select Faculty' && AcademySelected != 'Select Academy')
@@ -232,6 +352,9 @@ myApp.controller('mainControler', function($scope,$location,$http){
 		if (FacultySelected != 'Select Faculty' && AcademySelected != 'Select Academy')
 		{
 			$location.path(view);
+			if (initPageAcademyView){
+				$scope.initDetailsAvgTableAcademy()
+			}
 		}
 		else {
 			alert("You must select Academy and Faculty");
@@ -247,7 +370,7 @@ myApp.controller('mainControler', function($scope,$location,$http){
 			&& SemesterSelected != 'Select Semester' && LecturerSelected != 'Select Lecturer')
 		{
 			$location.path(view);
-			if (initPageLecturerRank){
+			if (initPageAcademyView){
 				$scope.initDetailsLecturer();
 			}
 		}
@@ -269,6 +392,7 @@ myApp.controller('mainControler', function($scope,$location,$http){
 			alert("You must select Academy, Faculty, Course, Semester and Lecturer");
 		}
 	};
+
 
 });
 
@@ -323,6 +447,9 @@ myApp.controller('RankLecturerCont', function($scope,$location){
 		var newDBref = database.child(AcademySelected + '/Faculty/' + FacultySelected + '/Rating_faculty').push();
 		newDBref.set(facultyRank);
 		alert("Your ranking has beed sent");
+		initPageAcademyRank = false;
+		initPageLecturerRank = false;
+		//initAllDropDown(1);
 		$location.path('/');
 
 	};
@@ -375,6 +502,9 @@ myApp.controller('RankLecturerCont', function($scope,$location){
 			'/Rating').push();
 		newDBref.set(LecturerRank);
 		alert("Your ranking has beed sent");
+		initPageAcademyRank = false;
+		initPageLecturerRank = false;
+		//initAllDropDown(1);
 		$location.path('/');
 
 	};
@@ -418,8 +548,13 @@ myApp.config(function ($routeProvider, $locationProvider){
 		})
 	.when('/AddLecCourse',
 		{
-		controller: 'AddLecCont',
+		controller: 'mainControler',
 		templateUrl: 'partials/AddCourseLecturer.html'
+		})
+	.when('/About',
+		{
+		controller: 'mainControler',
+		templateUrl: 'partials/AboutUs.html'
 		})
 		.otherwise({ redirectTo: '/'});
 

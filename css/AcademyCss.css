@@ -8,6 +8,11 @@
 	border-radius: 25px;
 }
 
+#thead1 {
+color: rgb(32, 125, 255);
+border-color: black;
+}
+
 #headerPageW{
 
   font-style: italic;

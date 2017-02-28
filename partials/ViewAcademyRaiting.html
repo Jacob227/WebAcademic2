@@ -1,5 +1,5 @@
  <link href="css/AcademyCss.css" rel="stylesheet">
-<div class="container">
+<div class="container" data-ng-controller="mainControler">
 <div class="row ">
 <div class="col-md-9">
  <div class="thumbnail" id="FrameViewAcadmy">
@@ -13,17 +13,37 @@
 
 <hr>
 
-                    <p class="detailsRAcademy">Academy: </p>
-                    <p class="detailsRAcademy">Faculty: </p>
-                    <p class="detailsRAcademy">Academy difficulty (Avg): </p>
-                    <p class="detailsRAcademy">Student character (Avg): </p>
-                    <p class="detailsRAcademy">Social life (Avg): </p>
- 				    <p class="detailsRAcademy">Faculty secretary (Avg): </p>
-                    <p class="detailsRAcademy">Studert's union (Avg): </p>
+<div id="progressTimer"></div>
 
+<!--
+<div class="progress">
+  <div class="progress-bar" role="progressbar" aria-valuemin="0" aria-valuemax="100" style="width: 100%;">
+    <span class="sr-only"></span>
+  </div>
+</div> -->
 
 <hr>
 
+                    <div class="detailsAcademy" >
+                      <span class="detailsAcademy" id="detailsAcademyId" >Academy: </span> <span id="detailsAcademyId3" style="color:black"></span>
+                        <br>
+                      <span class="detailsAcademy" id="detailsFacultyId">Faculty: </span><span id="detailsFacultyId3" style="color:black"></span>
+                      <br>
+                        <span class="detailsAcademy" id="detailsAcademyId" >Academy difficulty (Avg): </span> <span id="detailsdiffId3" style="color:black"></span>
+                        <br>
+                      <span class="detailsAcademy" id="detailsFacultyId">Student character (Avg): </span><span id="detailscharacterId3" style="color:black"></span>
+                      <br>
+                        <span class="detailsAcademy" id="detailsAcademyId" >Social life (Avg): </span> <span id="detailsSocialId3" style="color:black"></span>
+                        <br>
+                      <span class="detailsAcademy" id="detailsFacultyId">Faculty secretary (Avg): </span><span id="detailssecretaryId3" style="color:black"></span>
+                      <br>
+                        <span class="detailsAcademy" id="detailsAcademyId" >Studert's union (Avg): </span> <span id="detailsunionId3" style="color:black"></span>
+                        <br>
+                      <div ></div>
+                    </div>
+                    <hr>
+
+<hr>
 
 
 <div>
@@ -42,18 +62,17 @@
     </tr>
   </thead>
   <tbody>
-    <tr>
-      <th scope="row">1</th>
-      <td>Mark</td>
-      <td>Otto</td>
-      <td>@mdo</td>
-      <td>@mdo</td>
-      <td>@mdo</td>
-      <td>@mdo</td>
-      <td>@mdo</td>
-      <td>hi how are u ok so i am very happy</td>
+    <tr style="color: black">
+
     </tr>
 
   </tbody>
 </table>
-</div></div></div></div></div></div>
+</div>
+
+</div></div></div></div> 
+<div ng-init="initDetailsAvgTableAcademy()">
+
+</div>
+
+</div>
