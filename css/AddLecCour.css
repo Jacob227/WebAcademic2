@@ -20,6 +20,7 @@
 
 #contS{
 	text-decoration: underline;
+	 float: left;
 	margin-left: 30px
 }
 
@@ -115,13 +116,38 @@
 }
 
 #imgI{
-	float: right;
-	margin-right: 7px;
-	width: 30px;
-	height: 30px
+
 }
 
 .CnameE{
 		margin-left: 30px;
 	 color:black;
+}
+
+
+
+#imgI {
+
+    display: inline-block;
+   float: left;
+	margin-left: 17px;
+	width: 30px;
+	height: 30px
+}
+
+ #tooltiptext {
+    visibility: hidden;
+    width: 320px;
+    background-color: black;
+    color: #fff;
+    right: 37%;
+    text-align: center;
+    border-radius: 6px;
+    margin-top: 25px;
+    position: absolute;
+    z-index: 1;
+}
+
+#imgI:hover+#tooltiptext {
+    visibility: visible;
 }
