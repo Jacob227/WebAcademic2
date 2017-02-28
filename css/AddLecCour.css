@@ -1,0 +1,127 @@
+#headerPageAdd{
+  font-style: italic;
+  font-size: 60px;
+  color:rgb(32, 125, 255);
+  width: 1100px;
+}
+
+
+#wellWidth{
+ width: 900px;
+ border-radius: 50px;
+}
+
+#imgAddCL{
+	margin-left: 200px;
+	width:300px;
+	 border-radius: 50px;
+	height: 150px;
+}
+
+#contS{
+	text-decoration: underline;
+	margin-left: 30px
+}
+
+#Fname1{
+	margin-left: 30px;
+	 color:black;
+
+}
+#Fname2{
+	margin-left: 30px;
+	color:black;
+}
+
+#Fname3{
+	margin-left: 30px;
+	color:black;
+}
+#Fname4{
+	margin-left: 15px;
+	color:black;
+}
+#Fname5{
+	margin-left: 15px;
+	color:black;
+}
+.inputBackG{
+	background-color: #93ceff;
+}
+
+.FnameL{
+		margin-left: 30px;
+	 color:black;
+}
+.FnameL1{
+		margin-left: 30px;
+	 color:black;
+}
+
+
+#inputFname{
+	width: 200px;
+	margin-left: 33px;
+}
+#inputEmail{
+	width: 200px;
+	margin-left: 60px;
+}
+
+#dropdownAcademy3{
+	margin-left: 30px
+}
+
+#dropdownFaculty3{
+	margin-left: 45px
+}
+
+#FullnameL{
+	width: 220px;
+	margin-left: 20px;
+}
+
+
+#FullCourse{
+	width: 220px;
+	margin-left: 20px;
+	height: 20px;
+}
+
+#FullCourse1{
+	width: 220px;
+	margin-left: 20px;
+}
+#FullCourse2{
+	width: 220px;
+	margin-left: 20px;
+}
+#FullCourse3{
+	width: 220px;
+	margin-left: 20px;
+}
+#FullCourse4{
+	width: 220px;
+	margin-left: 20px;
+}
+#FullCourse5{
+	width: 220px;
+	margin-left: 30px;
+	background-color: #93ceff;
+}
+
+#dropdownCourse3{
+	margin-left: 45px
+}
+
+#imgI{
+	float: right;
+	margin-right: 7px;
+	width: 30px;
+	height: 30px
+}
+
+.CnameE{
+		margin-left: 30px;
+	 color:black;
+}

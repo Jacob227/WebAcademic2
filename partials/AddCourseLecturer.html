@@ -1,0 +1,102 @@
+ <link href="css/AddLecCour.css" rel="stylesheet">
+<div class="container" >
+	<div class="col-md-9"> 
+	<div class="well"  id="wellWidth">
+		<h4 id="headerPageAdd">Add New Lectuerer And Course</h4>
+		<img id="imgAddCL" class="img-responsive " src="images/addC.jpg" alt="">
+
+<hr>
+
+<div class="row">
+<img id="imgI" class="img-responsive " src="images/i.png" alt="">
+<h4 id="contS">Sender contact:</h4>
+
+<span id="Fname1">Full name: <input id="inputFname" type="type" name="FullName" class="inputBackG"></span>
+</div>
+<br>
+<div class="row">
+<span id="Fname2">Phone Number: <input style="width: 50px" type="type" name="" class="inputBackG"> - <input style="width: 140px" type="type" name="" class="inputBackG"></span>
+</div>
+<br>
+<div class="row">
+<span id="Fname3">Email: <input id="inputEmail" type="type" name="EMALName" class="inputBackG"></span>
+</div>
+
+
+
+<hr style="border-width: 4px">
+
+<div class="row">
+<h4 id="contS">Add Course/Lectuerer:</h4>
+</div>
+<br>
+<span id="Fname4">Choose Academy:</span><span id="dropdownAcademy3"><select class="selectpicker" data-live-search="true" data-style="btn-info" id="dropdownAcademy">
+                                    <option>Select Academy</option>
+                                </select> </span>
+<br><br>
+<span id="Fname5">Choose Faculty:</span><span id="dropdownFaculty3"><select class="selectpicker" data-live-search="true" data-style="btn-info" id= "dropdownFaculty">
+                                    <option>Select Faculty</option>
+                                </select>
+
+
+<br>
+
+<div class="row">
+<span class="FnameL">Lecturer Name: <span style="margin-left: 30px"> <input id="FullnameL" type="type" name="FullName" class="inputBackG"></span></span>
+</div>
+
+<br>
+
+<div class="row" id="chCourse">
+<span class="FnameL1">Choose Course:<span id="dropdownCourse3"> <select class="selectpicker" data-live-search="true" data-style="btn-info" id="dropdownCourse2">
+                                    <option>Select Course</option>
+                                </select></span>  	
+                                <input style="margin-left: 12px" type="checkbox"  id="AnnonymosCheck" onChange="check(this)"> Non-Existing-Course.
+  <br>
+
+
+</div>
+<div class="row"  style="display: none" id="EnNameCourse">
+<span class="CnameE">Enter Course Name: <span style="margin-left: 2px"> <input id="FullCourse" type="type" name="FullName" class="inputBackG"></span></span>
+<br><br>
+<span class="CnameE">Enter Code Course: <span style="margin-left: 4px"> <input id="FullCourse1" type="type" name="FullName" class="inputBackG"></span></span>
+<br><br>
+<span class="CnameE">Enter Credits Course:<input id="FullCourse2" type="type" name="FullName" class="inputBackG"></span>
+<br><br>
+<span class="CnameE">Enter Room Location:<input id="FullCourse3" type="type" name="FullName" class="inputBackG"></span>
+
+<br><br>
+<span class="CnameE">Time: <span style="margin-left: 95px"> <input id="FullCourse4" type="type" name="FullName" class="inputBackG"></span></span>
+
+<br><br>
+<span class="CnameE">Syllabus:  <textarea class="form-control" rows="4" id="FullCourse5"></textarea></span>
+
+</div>
+
+<hr>
+<span style="margin-left: 300px"> 
+	<a id="SendBut"   style="width: 130px" class="btn btn-primary" data-ng-click="RankClickAcademy('RankClickAcademy')">
+		Send
+	</a></span>
+
+
+
+</div>
+</div>
+</div>
+
+<script type="text/javascript">
+	
+	    function check(el) {
+	    var ChC = document.getElementById('dropdownCourse2');
+        var EN =  document.getElementById('EnNameCourse');
+       if(el.checked == false){
+       		EN.style.display='none';
+       		ChC.disabled=false; 
+       }
+       else{
+       		EN.style.display= 'block';
+       		ChC.disabled= true; 
+       }
+}
+</script>
