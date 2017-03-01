@@ -191,13 +191,15 @@ function initAllPages(){
 	 initPageAcademyView = false;
 }
 
-myApp.controller('mainControler', function($scope,$location,$http){
 
+myApp.controller('mainControler', function($scope,$location,$http,$route){
+	$scope.initAddLec = 0;
 	//alert("hiiii");
 	$scope.moveToPath = function(view){
 		//alert(view);
-
+		$route.reload();
 		$location.path(view);
+		
 	};
 
 	$scope.navAcademyCont = function(view){
@@ -206,6 +208,9 @@ myApp.controller('mainControler', function($scope,$location,$http){
 		$location.path(view);
 	};
 
+	$scope.initDetailsAddLecCo = function () {
+		//$route.reload();
+	}
 
 	$scope.initDetailsAcademy = function () {
 		document.getElementById("detailsAcademyId1").innerHTML = ' ' + AcademySelected;
@@ -238,16 +243,19 @@ myApp.controller('mainControler', function($scope,$location,$http){
 	$scope.initDetailsAvgTableAcademy = function () {
 
 		var table = document.getElementById("tableA");
+
 		var rowCount = table.rows.length; while(--rowCount) table.deleteRow(rowCount); 
+		var rowH = document.getElementById("tableA").rows;
+		rowH[0].style.backgroundColor = "rgb(51, 122, 183)" ;
+		rowH[0].style.color = "#000000" ;
+
 		waitFinish = 0;
 		rankListAcademt = [];
 		var avgAcademyDiff = 0, avgFacultySec = 0, avgSocial = 0, avgUnion = 0, avgStudentChar = 0;
 		var indexC = 0;
 		database.child(AcademySelected + '/Faculty/' + FacultySelected + '/Rating_faculty').once("value", function(snapshot){
 			var numOfChild = snapshot.numChildren();
-			//alert(numOfChild);
-			
-			//var row = table.insertRow(numOfChild);
+
 			snapshot.forEach(function(childSnapshot) {
 
 				rankListAcademt.push(childSnapshot);
@@ -258,9 +266,14 @@ myApp.controller('mainControler', function($scope,$location,$http){
 				avgUnion += childSnapshot.val().student_union;
 				avgStudentChar += childSnapshot.val().students_char;
 				indexC++;
-				//var row = table.insertRow(indexC);
 				var row = table.insertRow(indexC);
+
 				row.insertCell(0).innerHTML = indexC;
+
+				rowH[indexC].cells[0].style.backgroundColor = "rgb(51, 122, 183)";
+				rowH[indexC].cells[0].style.color = "#000000";
+				rowH[indexC].cells[0].style.fontWeight = "bold";
+
 				if (childSnapshot.val().annonymos == true || childSnapshot.val().rank_name == "") {
 					row.insertCell(1).innerHTML = "    -";
 				} else {
@@ -268,6 +281,8 @@ myApp.controller('mainControler', function($scope,$location,$http){
 					row.insertCell(1).innerHTML = childSnapshot.val().rank_name;
 				}
 				
+				row.style.textAlign = "center";
+
 				row.insertCell(2).innerHTML = childSnapshot.val().date;
 				row.insertCell(3).innerHTML = childSnapshot.val().academy_difficulty;
 				row.insertCell(4).innerHTML = childSnapshot.val().students_char;
@@ -275,14 +290,14 @@ myApp.controller('mainControler', function($scope,$location,$http){
 				row.insertCell(6).innerHTML = childSnapshot.val().faculty_secretary;
 				row.insertCell(7).innerHTML = childSnapshot.val().student_union;
 				row.insertCell(8).innerHTML = childSnapshot.val().few_words;
-				/*
-				childSnapshot.forEach(function(childSnapshotSem) {
-					switch (indexCh){
-						case 0: avgAcademyDiff += childSnapshotSem.val
-					}
+				rowH[indexC].cells[8].style.textAlign = "left";
 
-				});	
-				*/
+				if (indexC % 2) {
+					row.className = 'cellStyleOdd';
+				}
+				else {
+					row.className = 'cellStyleEven';
+				}
 
 			});
 			waitFinish = 1;
@@ -316,19 +331,6 @@ myApp.controller('mainControler', function($scope,$location,$http){
 		    }
 		});
 		
-/*
-		var i = 100;
-		var counterBack = setInterval(function(){
-		  i--;
-		  if (i > 0){
-		    $('.progress-bar').css('width', i+'%');
-		  } else {
-		    clearInterval(counterBack);
-		  }
-		  
-		}, 20);
-		*/
-
 		initPageAcademyView = true;
 	}
 

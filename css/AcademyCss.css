@@ -1,3 +1,10 @@
+
+table {
+    border-collapse: separate;
+    border-spacing: 0;
+    min-width: 350px;
+}
+
 #tableA{
 	 border-width: 2px;
 	 border-color: rgb(32, 125, 255);
@@ -12,6 +19,7 @@
 color: rgb(32, 125, 255);
 border-color: black;
 }
+
 
 #headerPageW{
 
@@ -34,4 +42,16 @@ border-color: black;
 	color : rgb(32, 125, 255);
 	text-decoration: underline;
 	font-weight: bold;
+}
+
+.cellStyleOdd{
+     border: 1px solid black;
+     background-color: #e0e0e0;
+     color : #000000;
+}
+
+.cellStyleEven{
+     border: 1px solid black;
+     background-color: #fcfcfc;
+     color : #000000;
 }
