@@ -5,6 +5,7 @@ var FacultySelected = 'Select Faculty';
 var CourseSelected = 'Select Course';
 var SemesterSelected = 'Select Semester';
 var LecturerSelected = 'Select Lecturer';
+var initVarsDet = 0;
 
 var jQuerySelectedIdList = ['#dropdownAcademy', '#dropdownFaculty', '#dropdownCourse', '#dropdownSem', '#dropdownLec' ];
 var selectedToAddList = ['Select Academy', 'Select Faculty', 'Select Course', 'Select Semester','Select Lecturer'];
@@ -12,14 +13,27 @@ var snapshotAllSemesterSave;
 var listOfAllLecturer = [];
 var database;
 
+ 
+ function initVars() {
+ 	if (localStorage.getItem("initVarsDet") == null){
+ 		localStorage.setItem("initVarsDet","1");
+ 		localStorage.setItem("AcademySelected",AcademySelected);
+ 		localStorage.setItem("FacultySelected",FacultySelected);
+ 		localStorage.setItem("CourseSelected",CourseSelected);
+ 		localStorage.setItem("SemesterSelected",SemesterSelected);
+ 		localStorage.setItem("LecturerSelected",LecturerSelected);
+ 	}
+
+ }
+
  function initVarSelected(i){
  	//alert(i);
  	switch (i)
  	{
- 		case 1: FacultySelected = 'Select Faculty'; break;
- 		case 2: CourseSelected = 'Select Course'; break;
- 		case 3: SemesterSelected = 'Select Semester'; break;
- 		case 4: LecturerSelected = 'Select Lecturer'; break;
+ 		case 1: localStorage.setItem("FacultySelected", 'Select Faculty'); break;
+ 		case 2: localStorage.setItem("CourseSelected", 'Select Course'); break;
+ 		case 3: localStorage.setItem("SemesterSelected", 'Select Semester'); break;
+ 		case 4: localStorage.setItem("SemesterSelected", 'Select Lecturer'); break;
  	}
  }
 
@@ -76,7 +90,8 @@ var database;
  function onClickSemester(snapshot)
  {
  		initAllDropDown(4);
-		if (SemesterSelected == 'All') {
+ 		initVars();
+		if (localStorage.getItem("SemesterSelected") == 'All') {
 			listOfAllLecturer = [];
 			snapshotAllSemesterSave.forEach(function(childSnapshot) {
 				initAllDropDown(4);
@@ -116,10 +131,10 @@ var loadDataFromDB = function() {
 	});
 
 	$("#dropdownAcademy").on('changed.bs.select', function(e, clickedIndex, newValue, oldValue){
-		AcademySelected = $(e.currentTarget).val();
-		if (AcademySelected != 'Select Academy')
+		localStorage.setItem("AcademySelected", $(e.currentTarget).val());
+		if (localStorage.getItem("AcademySelected") != 'Select Academy')
 		{
-			database.child(AcademySelected + '/Faculty').once("value",onClickAcademy);
+			database.child(localStorage.getItem("AcademySelected") + '/Faculty').once("value",onClickAcademy);
 		}
 		//alert(selected);
 	});
@@ -334,6 +349,108 @@ myApp.controller('mainControler', function($scope,$location,$http,$route){
 		initPageAcademyView = true;
 	}
 
+
+	$scope.initDetailsAvgTableLecturer = function () {
+
+		var numOfRaitingLec = 0;
+		var table = document.getElementById("tableB");
+
+		var rowCount = table.rows.length; while(--rowCount) table.deleteRow(rowCount); 
+		var rowH = document.getElementById("tableB").rows;
+
+
+		rowH[0].style.backgroundColor = "rgb(51, 122, 183)" ;
+		rowH[0].style.color = "#000000" ;
+
+		waitFinish = 0;
+		var avgCourseLevel= 0, avgLecAtit = 0, avgMotivation = 0, avgLecInterst = 0;
+		var indexC = 0;
+		database.child(AcademySelected + '/Faculty/' + FacultySelected + '/Course/' + 
+			CourseSelected + '/' + SemesterSelected + '/Lecturer/' + LecturerSelected +
+			'/Rating').once("value", function(snapshot){
+			var numOfChild = snapshot.numChildren();
+			numOfRaitingLec = numOfChild;
+			//if ()
+			snapshot.forEach(function(childSnapshot) {
+
+				//alert("innn");
+				avgCourseLevel += childSnapshot.val().course_level;
+				avgLecAtit += childSnapshot.val().attitude_lecturer_student;
+				avgMotivation += childSnapshot.val().ability_to_teach;
+				avgLecInterst += childSnapshot.val().teacher_interesting;
+				indexC++;
+				var row = table.insertRow(indexC);
+
+				row.insertCell(0).innerHTML = indexC;
+
+				rowH[indexC].cells[0].style.backgroundColor = "rgb(51, 122, 183)";
+				rowH[indexC].cells[0].style.color = "#000000";
+				rowH[indexC].cells[0].style.fontWeight = "bold";
+
+				if (childSnapshot.val().annonymos == true || childSnapshot.val().rank_name == "") {
+					row.insertCell(1).innerHTML = "    -";
+				} else {
+
+					row.insertCell(1).innerHTML = childSnapshot.val().rank_name;
+				}
+				
+				row.style.textAlign = "center";
+
+				row.insertCell(2).innerHTML = childSnapshot.val().date;
+				row.insertCell(3).innerHTML = childSnapshot.val().course_level;
+				row.insertCell(4).innerHTML = childSnapshot.val().attitude_lecturer_student;
+				row.insertCell(5).innerHTML = childSnapshot.val().ability_to_teach;
+				row.insertCell(6).innerHTML = childSnapshot.val().teacher_interesting;
+				row.insertCell(7).innerHTML = childSnapshot.val().few_words;
+				rowH[indexC].cells[7].style.textAlign = "left";
+
+				if (indexC % 2) {
+					row.className = 'cellStyleOdd';
+				}
+				else {
+					row.className = 'cellStyleEven';
+				}
+
+			});
+			waitFinish = 1;
+		});
+
+
+		sleep(3000).then(() => {
+
+	    	if (waitFinish) {
+	    		document.getElementById("detailsAcademyId4").innerHTML = '&nbsp' + AcademySelected;
+	    		//document.getElementById("detailsAcademyId4").textDecoration = "none";
+				document.getElementById("detailsFacultyId4").innerHTML = '&nbsp' + FacultySelected;
+				document.getElementById("detailsLec4").innerHTML = '&nbsp' + LecturerSelected;
+				document.getElementById("detailsCourse4").innerHTML = '&nbsp' + CourseSelected;
+				document.getElementById("detailsSemester4").innerHTML = '&nbsp' + SemesterSelected;
+				document.getElementById("detailsRevNum4").innerHTML = '&nbsp' + numOfRaitingLec;
+				document.getElementById("detailsCourseLevel4").innerHTML = '&nbsp' + (avgCourseLevel / indexC).toFixed(2)   ;
+				document.getElementById("detailLecAttit4").innerHTML = '&nbsp' + (avgLecAtit / indexC).toFixed(2) ;
+				document.getElementById("detailsMorivation4").innerHTML = '&nbsp' + (avgMotivation / indexC).toFixed(2) ;
+				document.getElementById("detailsLecIntr4").innerHTML = '&nbsp' + (avgLecInterst / indexC).toFixed(2) ;
+			}
+			
+
+		});
+		$("#progressTimer").show();
+		$("#progressTimer").progressTimer({
+		    timeLimit: 3.5,
+		    warningThreshold: 10,
+		    baseStyle: 'progress-bar-warning',
+		    warningStyle: 'progress-bar-danger',
+		    completeStyle: 'progress-bar-info',
+		    onFinish: function() {
+		        console.log("I'm done");
+		        $("#progressTimer").hide();
+		    }
+		});
+		
+		initPageLecturerView = true;
+	}
+
+
 	$scope.moveToRankAcademy = function(view){
 		//alert(view);
 		if (FacultySelected != 'Select Faculty' && AcademySelected != 'Select Academy')
@@ -389,6 +506,10 @@ myApp.controller('mainControler', function($scope,$location,$http,$route){
 			&& SemesterSelected != 'Select Semester' && LecturerSelected != 'Select Lecturer')
 		{
 			$location.path(view);
+			if (initPageLecturerView){
+				$scope.initDetailsAvgTableLecturer();
+			}
+
 		}
 		else {
 			alert("You must select Academy, Faculty, Course, Semester and Lecturer");
@@ -496,6 +617,7 @@ myApp.controller('RankLecturerCont', function($scope,$location){
 			teacher_interesting : teacher_interesting1,
 			date : today,
 			annonymos : annonymos1,
+			rank_name : userName,
 			few_words : FawWords
 		};
 
@@ -557,6 +679,11 @@ myApp.config(function ($routeProvider, $locationProvider){
 		{
 		controller: 'mainControler',
 		templateUrl: 'partials/AboutUs.html'
+		})
+	.when('/Contact',
+		{
+		controller: 'mainControler',
+		templateUrl: 'partials/contact.html'
 		})
 		.otherwise({ redirectTo: '/'});
 

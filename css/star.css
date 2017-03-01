@@ -10,6 +10,16 @@
   color:rgb(32, 125, 255);
 }
 
+.detailsLecturerView {
+  color : rgb(32, 125, 255);
+  text-decoration: underline;
+  font-weight: bold;
+  font-size: 120%;
+}
+
+.detailsLecturerViewCol {
+  font-weight: bold;
+}
 
 #headerPageC{
   font-style: italic;
