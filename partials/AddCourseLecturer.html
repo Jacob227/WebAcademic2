@@ -99,6 +99,19 @@
 
 <script type="text/javascript">
 	
+(function()
+{
+  if( window.localStorage )
+  {
+    if( !localStorage.getItem( 'firstLoad' ) )
+    {
+      localStorage[ 'firstLoad' ] = true;
+      window.location.reload();
+    }  
+    else
+      localStorage.removeItem( 'firstLoad' );
+  }
+})();
 	    function check(el) {
 	    var ChC = document.getElementById('dropdownCourse2');
         var EN =  document.getElementById('EnNameCourse');
