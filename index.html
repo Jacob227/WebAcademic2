@@ -54,7 +54,7 @@
                         <a href="" data-ng-click="moveToPath('About')">About</a>
                     </li>
                     <li>
-                        <a href="" data-ng-click="moveToPath('Contact')">Contact</a>
+                        <a href=""   data-toggle="modal" data-target="#contact" data-original-title>Contact</a>
                     </li>
                 </ul>
             </div>
@@ -132,7 +132,20 @@
                     </div>
  <!--  End of Jacob part 23/2   -->   
 
-        <div data-ng-view=""></div>
+<div data-ng-view=""></div>
+
+
+<!--contact us-->
+
+<div id="includedContent"></div>
+
+
+<!--end contact us-->
+
+
+
+
+        
 
 
         </div>
@@ -192,7 +205,12 @@
 </script>
 
 
-
+<script type="text/javascript">
+  
+ $(function(){
+      $("#includedContent").load("partials/contact.html"); 
+    });
+</script>
 
 
 
