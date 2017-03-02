@@ -1,40 +1,40 @@
 
-<div class="container" >
+<div class="container"  data-ng-controller="mainControler">
     <div class="row">
         <div class="col-xs-12 col-md-3">
             <div class="panel panel-primary" style="width: 500px">
                 <div class="panel-heading"  style="text-align: center;">
-                    <h3 class="panel-title">
+                    <h3 class="panel-title" id="titleCourse">
                         Hedva</h3>
                 </div>
                 <div class="panel-body" style="text-align: center">
                     <div class="the-price">
-                        <h3>Mr. Alex Web</h3>
-                        <small>Ort Braude Collage</small>
+                        <h3 id="LecName">Mr. Alex Web</h3>
+                        <h3 id="AcademyId">Ort Braude Collage</h3>
                     </div>
-                    <table class="table">
+                    <table class="table" id="tableId">
                         <tr>
-                            <td>
+                            <td id="codeCourse">
                                 Code course: 421312
                             </td>
                         </tr>
                         <tr class="active">
-                            <td>
+                            <td id="Credits">
                                 4 Credits point
                             </td>
                         </tr>
                         <tr>
-                            <td>
+                            <td id="Time">
                                 Time: Thursday, 15:00 - 17:50
                             </td>
                         </tr>
                         <tr class="active">
-                            <td>
+                            <td id=Room>
                                 Room: M-106
                             </td>
                         </tr>
                         <tr>
-                            <td>
+                            <td id="Syllabus">
                                Syllabus
                             </td>
                         </tr>
@@ -46,4 +46,5 @@
 
 
     </div>
+    <div ng-init="initDetailsCourse()"></div>
 </div>

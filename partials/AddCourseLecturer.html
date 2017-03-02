@@ -1,5 +1,5 @@
  <link href="css/AddLecCour.css" rel="stylesheet">
-<div class="container" >
+<div class="container" data-ng-controller="mainControler" >
 	<div class="col-md-9"> 
 	<div class="well"  id="wellWidth">
 		<h4 id="headerPageAdd">Add New Lectuerer And Course</h4>
@@ -27,7 +27,7 @@
 
 <br>
 <div class="row">
-<span id="Fname2">Phone Number: <input style="width: 50px" type="type" name="" class="inputBackG"> - <input style="width: 140px" type="type" name="" class="inputBackG"></span>
+<span id="Fname2">Phone Number: <input id="phone1"  style="width: 200px" type="type" name="phoneNum" class="inputBackG"></span>
 </div>
 <br>
 <div class="row">
@@ -43,12 +43,12 @@
 </div>
 <br>
 <span id="Fname4">Choose Academy:</span><span id="dropdownAcademy3"><select class="selectpicker" data-live-search="true" data-style="btn-info" id="dropdownAcademy1">
-                                    <option>Select Academy</option>
-                                </select> </span>
+<option>Select Academy</option>
+</select> </span>
 <br><br>
-<span id="Fname5">Choose Faculty:</span><span id="dropdownFaculty3"><select class="selectpicker" data-live-search="true" data-style="btn-info" id= "dropdownFaculty3">
-                                    <option>Select Faculty</option>
-                                </select>
+<span id="Fname5">Choose Faculty:</span><span id="dropdownFaculty3"><select class="selectpicker" data-live-search="true" data-style="btn-info" id= "dropdownFaculty1">
+<option>Select Faculty</option>
+</select>
 
 
 <br>
@@ -60,10 +60,10 @@
 <br>
 
 <div class="row" id="chCourse">
-<span class="FnameL1">Choose Course:<span id="dropdownCourse3"> <select class="selectpicker" data-live-search="true" data-style="btn-info" id="dropdownCourse2">
+<span class="FnameL1">Choose Course:<span id="dropdownCourse3"> <select class="selectpicker" data-live-search="true" data-style="btn-info" id="dropdownCourse1">
                                     <option>Select Course</option>
                                 </select></span>  	
-                                <input style="margin-left: 12px" type="checkbox"  id="AnnonymosCheck" onChange="check(this)"> Non-Existing-Course.
+                                <input style="margin-left: 12px" type="checkbox"  id="CheckCourse" onChange="check(this)"> Non-Existing-Course.
   <br>
 
 
@@ -87,7 +87,7 @@
 
 <hr>
 <span style="margin-left: 300px"> 
-	<a id="SendBut"   style="width: 130px" class="btn btn-primary" data-ng-click="RankClickAcademy('RankClickAcademy')">
+	<a id="SendBut"   style="width: 130px" class="btn btn-primary" data-ng-click="SendAddLec()">
 		Send
 	</a></span>
 
@@ -96,6 +96,8 @@
 </div>
 </div>
 </div>
+
+<div ng-init="initDetailsAddLec()"></div>
 
 <script type="text/javascript">
 	

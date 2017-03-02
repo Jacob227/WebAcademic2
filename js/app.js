@@ -1,39 +1,51 @@
 var myApp = angular.module('myApp', ['ngRoute', 'firebase']);
 
-var AcademySelected = 'Select Academy';
-var FacultySelected = 'Select Faculty';
-var CourseSelected = 'Select Course';
-var SemesterSelected = 'Select Semester';
-var LecturerSelected = 'Select Lecturer';
-var initVarsDet = 0;
+//var AcademySelected = 'Select Academy';
+//var FacultySelected = 'Select Faculty';
+//var CourseSelected = 'Select Course';
+//var SemesterSelected = 'Select Semester';
+//var LecturerSelected = 'Select Lecturer';
+//var initVarsDet = 0;
 
 var jQuerySelectedIdList = ['#dropdownAcademy', '#dropdownFaculty', '#dropdownCourse', '#dropdownSem', '#dropdownLec' ];
 var selectedToAddList = ['Select Academy', 'Select Faculty', 'Select Course', 'Select Semester','Select Lecturer'];
 var snapshotAllSemesterSave;
 var listOfAllLecturer = [];
 var database;
-
+var initPageAcademyRank = "false";
+var initPageLecturerRank = "false";
+var initPageLecturerView = "false";
+var initPageAcademyView = "false";
  
- function initVars() {
- 	if (localStorage.getItem("initVarsDet") == null){
- 		localStorage.setItem("initVarsDet","1");
- 		localStorage.setItem("AcademySelected",AcademySelected);
- 		localStorage.setItem("FacultySelected",FacultySelected);
- 		localStorage.setItem("CourseSelected",CourseSelected);
- 		localStorage.setItem("SemesterSelected",SemesterSelected);
- 		localStorage.setItem("LecturerSelected",LecturerSelected);
- 	}
 
+ function initPages(){
+ 	sessionStorage.setItem("initPageAcademyRank","false");
+	sessionStorage.setItem("initPageLecturerRank","false");
+	sessionStorage.setItem("initPageLecturerView","false");
+	sessionStorage.setItem("initPageAcademyView","false");
+
+	sessionStorage.setItem("initPageSyllabus","false");
+ }
+
+ function initVars() {
+ 	
+ 		//sessionStorage.setItem("initVarsDet","1");
+ 		sessionStorage.setItem("AcademySelected",'Select Academy');
+ 		sessionStorage.setItem("FacultySelected",'Select Faculty');
+ 		sessionStorage.setItem("CourseSelected",'Select Course');
+ 		sessionStorage.setItem("SemesterSelected",'Select Semester');
+ 		sessionStorage.setItem("LecturerSelected",'Select Lecturer');
+ 		sessionStorage.setItem("MyScreen",'firstScreen');
+ 		initPages();
  }
 
  function initVarSelected(i){
- 	//alert(i);
  	switch (i)
  	{
- 		case 1: localStorage.setItem("FacultySelected", 'Select Faculty'); break;
- 		case 2: localStorage.setItem("CourseSelected", 'Select Course'); break;
- 		case 3: localStorage.setItem("SemesterSelected", 'Select Semester'); break;
- 		case 4: localStorage.setItem("LecturerSelected", 'Select Lecturer'); break;
+ 		case 1: sessionStorage.setItem("FacultySelected", 'Select Faculty'); break;
+ 		case 2: sessionStorage.setItem("CourseSelected", 'Select Course'); break;
+ 		case 3: sessionStorage.setItem("SemesterSelected", 'Select Semester'); break;
+ 		case 4: sessionStorage.setItem("LecturerSelected", 'Select Lecturer'); break;
  	}
  }
 
@@ -47,6 +59,7 @@ var database;
 	    .append('<option>'+ selectedToAddList[i] +'</option>');
 	    initVarSelected(i);
 	}
+
  }
 
  function onClickAcademy(snapshot)
@@ -54,7 +67,7 @@ var database;
  		initAllDropDown(1);
 		snapshot.forEach(function(childSnapshot) {
 			//alert(childSnapshot.key);
-			$('#dropdownFaculty').append('<option>'+ childSnapshot.key +'</option>');
+			$('#dropdownFaculty').append('<option value="' + childSnapshot.key + '">' + childSnapshot.key +'</option>');
 			$(".selectpicker").selectpicker('refresh');
 			//alert(childSnapshot.key);
 		});
@@ -77,7 +90,7 @@ var database;
  {
  		initAllDropDown(3);
  		snapshotAllSemesterSave = snapshot;
- 		$('#dropdownSem').append('<option>All</option>');
+ 		//$('#dropdownSem').append('<option>All</option>');
 		snapshot.forEach(function(childSnapshot) {
 			//alert(childSnapshot.key);
 			$('#dropdownSem').append('<option>'+ childSnapshot.key +'</option>');
@@ -89,9 +102,10 @@ var database;
 
  function onClickSemester(snapshot)
  {
+
  		initAllDropDown(4);
  		
-		if (localStorage.getItem("SemesterSelected") == 'All') {
+		if (sessionStorage.getItem("SemesterSelected") == 'All') {
 			listOfAllLecturer = [];
 			snapshotAllSemesterSave.forEach(function(childSnapshot) {
 				//initAllDropDown(4);
@@ -114,14 +128,26 @@ var database;
 				$(".selectpicker").selectpicker('refresh');
 			});
 		}
+		//sessionStorage.setItem("refreshScreen", "0");
 		
 }
 
+
 var loadDataFromDB = function() {
-	alert("in loadDataFromDB");
-	initVars();
+	//alert("in loadDataFromDB");
+	if (performance.navigation.type == 1) {
+	  console.info( "This page is reloaded" );
+	  //database = firebase.database().ref().child('Academy');
+	}
+	else {
+		initVars();
+	}
+
 	//TODO - add first time
+	//sessionStorage.setItem("refreshScreen", "1"); 
 	 database = firebase.database().ref().child('Academy');
+	// alert(sessionStorage.getItem("AcademySelected"));
+	//alert(sessionStorage.getItem("FacultySelected"));
 	//var e  = document.getElementById("dropdownAcademy");
 	database.once("value", function(snapshot){
 		snapshot.forEach(function(childSnapshot) {
@@ -133,120 +159,372 @@ var loadDataFromDB = function() {
 	});
 
 	$("#dropdownAcademy").on('changed.bs.select', function(e, clickedIndex, newValue, oldValue){
-		localStorage.setItem("AcademySelected", $(e.currentTarget).val());
-		if (localStorage.getItem("AcademySelected") != 'Select Academy')
+		sessionStorage.setItem("AcademySelected", $(e.currentTarget).val());
+		if (sessionStorage.getItem("AcademySelected") != 'Select Academy')
 		{
-			database.child(localStorage.getItem("AcademySelected") + '/Faculty').once("value",onClickAcademy);
+			database.child(sessionStorage.getItem("AcademySelected") + '/Faculty').once("value",onClickAcademy);
 		}
 		//alert(selected);
 	});
 
 	$("#dropdownFaculty").on('changed.bs.select', function(e, clickedIndex, newValue, oldValue){
-		localStorage.setItem("FacultySelected", $(e.currentTarget).val());
+		sessionStorage.setItem("FacultySelected", $(e.currentTarget).val());
 
-		if (localStorage.getItem("FacultySelected") != 'Select Faculty' && localStorage.getItem("AcademySelected") != 'Select Academy')
+		if (sessionStorage.getItem("FacultySelected") != 'Select Faculty' && sessionStorage.getItem("AcademySelected") != 'Select Academy')
 		{
-			database.child(localStorage.getItem("AcademySelected") + '/Faculty/' + 
-				localStorage.getItem("FacultySelected") + '/Course').once("value",onClickFaculty);
+			database.child(sessionStorage.getItem("AcademySelected") + '/Faculty/' + 
+				sessionStorage.getItem("FacultySelected") + '/Course').once("value",onClickFaculty);
 
 		}
 		//alert(selected);
 	});
 
 	$("#dropdownCourse").on('changed.bs.select', function(e, clickedIndex, newValue, oldValue){
-		localStorage.setItem("CourseSelected", $(e.currentTarget).val());
+		sessionStorage.setItem("CourseSelected", $(e.currentTarget).val());
 
-		if (localStorage.getItem("CourseSelected") != 'Select Course' && localStorage.getItem("FacultySelected") != 'Select Faculty' 
-			&& localStorage.getItem("AcademySelected") != 'Select Academy')
+		if (sessionStorage.getItem("CourseSelected") != 'Select Course' && sessionStorage.getItem("FacultySelected") != 'Select Faculty' 
+			&& sessionStorage.getItem("AcademySelected") != 'Select Academy')
 		{
-			database.child(localStorage.getItem("AcademySelected") + '/Faculty/' + localStorage.getItem("FacultySelected") 
-				+ '/Course/' +localStorage.getItem("CourseSelected") ).once("value",onClickCourse);
+			database.child(sessionStorage.getItem("AcademySelected") + '/Faculty/' + sessionStorage.getItem("FacultySelected") 
+				+ '/Course/' +sessionStorage.getItem("CourseSelected") ).once("value",onClickCourse);
 
 		}
 		//alert(selected);
 	});
 
 	$("#dropdownSem").on('changed.bs.select', function(e, clickedIndex, newValue, oldValue){
-		localStorage.setItem("SemesterSelected", $(e.currentTarget).val());
+		sessionStorage.setItem("SemesterSelected", $(e.currentTarget).val());
 
-		//alert(localStorage.getItem("SemesterSelected"));
-		if (localStorage.getItem("CourseSelected") != 'Select Course' && localStorage.getItem("FacultySelected") != 'Select Faculty' 
-			&& localStorage.getItem("AcademySelected") != 'Select Academy'
-			&& localStorage.getItem("SemesterSelected") != 'Select Semester')
+		//alert(sessionStorage.getItem("SemesterSelected"));
+		if (sessionStorage.getItem("CourseSelected") != 'Select Course' && sessionStorage.getItem("FacultySelected") != 'Select Faculty' 
+			&& sessionStorage.getItem("AcademySelected") != 'Select Academy'
+			&& sessionStorage.getItem("SemesterSelected") != 'Select Semester')
 		{
-			database.child(localStorage.getItem("AcademySelected") + '/Faculty/' + localStorage.getItem("FacultySelected")
-			 + '/Course/' + localStorage.getItem("CourseSelected") +
-				'/' + localStorage.getItem("SemesterSelected") + '/Lecturer').once("value",onClickSemester);
+			database.child(sessionStorage.getItem("AcademySelected") + '/Faculty/' + sessionStorage.getItem("FacultySelected")
+			 + '/Course/' + sessionStorage.getItem("CourseSelected") +
+				'/' + sessionStorage.getItem("SemesterSelected") + '/Lecturer').once("value",onClickSemester);
 		}
 		//alert(selected);
 	});
 
 	$("#dropdownLec").on('changed.bs.select', function(e, clickedIndex, newValue, oldValue){
-		localStorage.setItem("LecturerSelected", $(e.currentTarget).val());
+		sessionStorage.setItem("LecturerSelected", $(e.currentTarget).val());
 	});
 
-
+	if (performance.navigation.type == 1) {
+		console.info( "This page is reloaded 222" );
+		//$('#dropdownAcademy').selectpicker('val', sessionStorage.getItem("AcademySelected"));
+		//$(".selectpicker").selectpicker('refresh');
+	}
 }
 
 loadDataFromDB();
+
 
 function sleep (time) {
   return new Promise((resolve) => setTimeout(resolve, time));
 }
 
-var initPageAcademyRank = false;
-var initPageLecturerRank = false;
-var initPageLecturerView = false;
-var initPageAcademyView = false;
 
-function initAllPages(){
-	 initPageAcademyRank = false;
-	 initPageLecturerRank = false;
-	 initPageLecturerView = false;
-	 initPageAcademyView = false;
-}
-
-
+var AcademySel = "Select Academy", FacultySel = "Select Faculty", CourseSel = "Select Course";
 myApp.controller('mainControler', function($scope,$location,$http,$route){
+
+	$scope.moveToContact = function(view){
+		$location.path(view);	
+	};
 
 	$scope.moveToPath = function(view){
 		$route.reload();
+		initPages();
 		$location.path(view);	
 	};
 
 	$scope.navAcademyCont = function(view){
 		$location.path(view);
+		initPages();
 	};
 
-	$scope.initDetailsAddLecCo = function () {
-		//$route.reload();
+	$scope.sendEmailToUS = function(){
+		var firstName1 = document.getElementById("EfirstName").value;
+		var lastName1 = document.getElementById("ElastName").value;
+		var Email1 = document.getElementById("Eemail").value;
+		var Subject1 = document.getElementById("Esubject").value;
+		var Message1 = document.getElementById("EMessage").value;
+		console.log("inn sendEmailToUS");
+		alert(firstName1 + ' ' + lastName1 + ' ' + Email1 + ' ' + Subject1 + ' ' + Message1);
+
+		if (firstName1!= '' && lastName1 != '' && Email1 != ''
+			&& Subject1 != '' && Message1 != '') {
+			//window.open('mailto:test@example.com');
+			var emailToSent = {
+				firstName : firstName1,
+				lastName : lastName1,
+				Email : Email1,
+				Subject : Subject1,
+				Message: Message1
+			};
+			var database2 = firebase.database().ref().child('Email').push();
+			database2.set(emailToSent);
+			alert("Thank you for contact us");
+			//var firebaseMail = firebase.database().ref();
+			//firebaseMail.child('Email').push();
+			//firebaseMail.set(emailToSent);
+
+		}
+		else {
+			alert("You must fill all the fields");
+		}
+
+	}
+
+	$scope.initDetailsCourse = function(){
+		document.getElementById("titleCourse").innerHTML = sessionStorage.getItem("CourseSelected");
+		document.getElementById("LecName").innerHTML = sessionStorage.getItem("LecturerSelected");
+		document.getElementById("AcademyId").innerHTML = sessionStorage.getItem("AcademySelected");
+		database.child(sessionStorage.getItem("AcademySelected") + '/Faculty/' + sessionStorage.getItem("FacultySelected")
+			 + '/Course/' + sessionStorage.getItem("CourseSelected") +
+				'/' + sessionStorage.getItem("SemesterSelected") + '/Course Details').once("value", function(snapshot){
+
+					document.getElementById("codeCourse").innerHTML = "Code course:&nbsp" + snapshot.val().code_course;
+					document.getElementById("Credits").innerHTML = "Credits:&nbsp" + snapshot.val().credits;
+					document.getElementById("Time").innerHTML = "Time:&nbsp" + snapshot.val().time;
+					document.getElementById("Room").innerHTML = "Room:&nbsp" + snapshot.val().room;
+					document.getElementById("Syllabus").innerHTML = "Syllabus:&nbsp" + snapshot.val().syllabus;
+					sessionStorage.setItem("initPageSyllabus","true");
+					sessionStorage.setItem("MyScreen",'navCourseDet');
+					//var table = document.getElementById("tableId");
+					//var rowCount = table.rows.length; while(--rowCount) table.deleteRow(rowCount); 
+					//	childSnapshot.val().academy_difficulty;
+					//alert(childSnapshot.key);
+
+				});
+	}
+
+	$scope.navCourseDet = function(view){
+		if (sessionStorage.getItem("CourseSelected") != 'Select Course' 
+			&& sessionStorage.getItem("FacultySelected") != 'Select Faculty'
+		 	&& sessionStorage.getItem("AcademySelected") != 'Select Academy'
+			&& sessionStorage.getItem("SemesterSelected") != 'Select Semester' 
+			 &&	sessionStorage.getItem("LecturerSelected") != 'Select Lecturer')
+		{
+			if (sessionStorage.getItem("MyScreen") == 'navCourseDet')
+			{
+				if(sessionStorage.getItem("initPageSyllabus") == "true")
+					$scope.initDetailsCourse();
+			}
+			else {
+				initPages();
+			}
+			$location.path(view);
+		}
+		else {
+			alert("You must select Academy, Faculty, Course, Semester and Lecturer");
+		}
+	};
+
+	$scope.initDetailsAddLec = function () {
+		
+		database = firebase.database().ref().child('Academy');
+		database.once("value", function(snapshot){
+			snapshot.forEach(function(childSnapshot) {
+				$('#dropdownAcademy1').append('<option>'+ childSnapshot.key +'</option>');
+				$(".selectpicker").selectpicker('refresh');
+				//alert(childSnapshot.key);
+			});
+			
+		});
+
+		$("#dropdownAcademy1").on('changed.bs.select', function(e, clickedIndex, newValue, oldValue){
+			AcademySel = $(e.currentTarget).val();
+			if (AcademySel != 'Select Academy')
+			{
+				database.child(AcademySel + '/Faculty').once("value", function(snapshot){
+					snapshot.forEach(function(childSnapshot) {
+
+					$('#dropdownFaculty1')
+				    .find('option')
+				    .remove()
+				    .end()
+				    .append('<option>'+ 'Select Faculty' +'</option>');
+
+				    $('#dropdownCourse1')
+				    .find('option')
+				    .remove()
+				    .end()
+				    .append('<option>'+ 'Select Course' +'</option>');
+
+					$('#dropdownFaculty1').append('<option>'+ childSnapshot.key +'</option>');
+					$(".selectpicker").selectpicker('refresh');
+					//alert(childSnapshot.key);
+					});
+				});
+				//database.child(sessionStorage.getItem("AcademySelected") + '/Faculty').once("value",onClickAcademy);
+			}
+			//alert(selected);
+		});
+
+		$("#dropdownFaculty1").on('changed.bs.select', function(e, clickedIndex, newValue, oldValue){
+			FacultySel = $(e.currentTarget).val();
+
+			if (FacultySel != 'Select Faculty' && AcademySel != 'Select Academy')
+			{
+				database.child(AcademySel + '/Faculty/' + 
+					FacultySel + '/Course').once("value", function(snapshot){
+					snapshot.forEach(function(childSnapshot) {
+
+				    $('#dropdownCourse1')
+				    .find('option')
+				    .remove()
+				    .end()
+				    .append('<option>'+ 'Select Course' +'</option>');
+
+					$('#dropdownCourse1').append('<option>'+ childSnapshot.key +'</option>');
+					$(".selectpicker").selectpicker('refresh');
+					//alert(childSnapshot.key);
+					});
+				});
+				//database.child(sessionStorage.getItem("AcademySelected") + '/Faculty/' + 
+				//	sessionStorage.getItem("FacultySelected") + '/Course').once("value",onClickFaculty);
+
+			}
+			//alert(selected);
+		});
+
+		$("#dropdownCourse1").on('changed.bs.select', function(e, clickedIndex, newValue, oldValue){
+			CourseSel = $(e.currentTarget).val();
+			//alert(selected);
+		});
+
+
+			//alert(document.getElementById("Fname4").innerHTML);
+	}
+
+	$scope.SendAddLec = function () {	
+		var fullName1 = document.getElementById("inputFname").value;
+		var Phone1 = document.getElementById("phone1").value;
+		var email1 = document.getElementById("inputEmail").value;
+		var LecName1 = document.getElementById("FullnameL").value;
+		var NonExisting = document.getElementById("CheckCourse");
+
+		if(AcademySel == 'Select Academy') {
+			alert("You must select Academy");
+			return;
+		}
+
+		if(FacultySel == 'Select Faculty') {
+			alert("You must select Faculty");
+			return;
+		}
+
+		if (fullName1 == "") {
+			alert("You must insert Full name");
+			return;
+		} else if (Phone1 == ""){
+			alert("You must insert Phone number");
+			return;
+		} else if (email1 == "") {
+			alert("You must insert email");
+			return;
+		} else if (LecName1 == "") {
+			alert("You must insert Lecturer name");
+			return;
+		} 
+
+		if (NonExisting.checked){
+			var CourseName1 = document.getElementById("FullCourse").value;
+			var CodeCourse1 = document.getElementById("FullCourse1").value;
+			var Credits1 = document.getElementById("FullCourse2").value;
+			var Room1 = document.getElementById("FullCourse3").value;
+			var Time1 = document.getElementById("FullCourse4").value;
+			var Syllabus1 = document.getElementById("FullCourse5").value;
+
+			if (CourseName1 == "") {
+				alert("You must insert Course name");
+				return;
+			} else if (CodeCourse1 == ""){
+				alert("You must insert code course");
+				return;
+			} else if (Credits1 == "") {
+				alert("You must insert credits");
+				return;
+			} else if (Room1 == "") {
+				alert("You must insert Room");
+				return;
+			} else if (Time1 == "") {
+				alert("You must insert Time");
+				return;
+			} else if (Syllabus1 == "") {
+				alert("You must insert syllabus");
+				return;
+			}
+			var lecDetailsAndCourse = {
+				fullName : fullName1,
+				Phone : phone1,
+				email : email1,
+				LecName : LecName1,
+				CourseName : CourseName1,
+				CodeCourse : CodeCourse1,
+				Credits : Credits1,
+				Room : Room1,
+				Time : Time1,
+				Syllabus : Syllabus1,
+				Academy : AcademySel,
+				Faculty : FacultySel
+			};
+
+			var database2 = firebase.database().ref().child('Request').push();
+			database2.set(lecDetailsAndCourse);
+			alert("The Request has been sent");
+
+		} else {
+			if(CourseSel == 'Select Course') {
+				alert("You must select Course");
+				return;
+			}
+			var lecDetailsAndCourse = {
+				fullName : fullName1,
+				Phone : phone1,
+				email : email1,
+				LecName : LecName1,
+				Academy : AcademySel,
+				Faculty : FacultySel,
+				Course : CourseSel
+			};
+
+			var database2 = firebase.database().ref().child('Request').push();
+			database2.set(lecDetailsAndCourse);
+			alert("The Request has been sent");
+		}
 	}
 
 	$scope.initDetailsAcademy = function () {
-		document.getElementById("detailsAcademyId1").innerHTML = '&nbsp' + localStorage.getItem("AcademySelected");
-		document.getElementById("detailsFacultyId1").innerHTML = '&nbsp' + localStorage.getItem("FacultySelected");
+		//alert(sessionStorage.getItem("AcademySelected"));
+		document.getElementById("detailsAcademyId1").innerHTML = '&nbsp' + sessionStorage.getItem("AcademySelected");
+		document.getElementById("detailsFacultyId1").innerHTML = '&nbsp' + sessionStorage.getItem("FacultySelected");
 		$('input:radio[id=ch1]').prop('checked', true);
 		$('#commentFewWord').val("");
 		$('input:checkbox[id=AnnonymosCheck]').prop('checked', true);
 		var EN =  document.getElementById('Ename');
 		EN.style.display='none';
 		$('#textName').val("");
-		initPageAcademyRank = true;
+		sessionStorage.setItem("initPageAcademyRank","true");
+		sessionStorage.setItem("MyScreen",'moveToRankAcademy');
 	}
 
 	$scope.initDetailsLecturer = function () {
-		document.getElementById("detailsAcademyId2").innerHTML = '&nbsp' + localStorage.getItem("AcademySelected");
-		document.getElementById("detailsFacultyId2").innerHTML = '&nbsp' + localStorage.getItem("FacultySelected");
-		document.getElementById("detailsSemesterId2").innerHTML = '&nbsp' + localStorage.getItem("SemesterSelected");
-		document.getElementById("detailsLecturerId2").innerHTML = '&nbsp' + localStorage.getItem("LecturerSelected");
-		document.getElementById("detailsCourseId2").innerHTML = '&nbsp' + localStorage.getItem("CourseSelected");
+		document.getElementById("detailsAcademyId2").innerHTML = '&nbsp' + sessionStorage.getItem("AcademySelected");
+		document.getElementById("detailsFacultyId2").innerHTML = '&nbsp' + sessionStorage.getItem("FacultySelected");
+		document.getElementById("detailsSemesterId2").innerHTML = '&nbsp' + sessionStorage.getItem("SemesterSelected");
+		document.getElementById("detailsLecturerId2").innerHTML = '&nbsp' + sessionStorage.getItem("LecturerSelected");
+		document.getElementById("detailsCourseId2").innerHTML = '&nbsp' + sessionStorage.getItem("CourseSelected");
 		$('input:radio[id=ch1]').prop('checked', true);
 		$('#commentFewWord').val("");
 		$('input:checkbox[id=AnnonymosCheck]').prop('checked', true);
 		var EN =  document.getElementById('Ename');
 		EN.style.display='none';
 		$('#textName').val("");
-		initPageLecturerRank = true;
+		sessionStorage.setItem("initPageLecturerRank","true");
+		sessionStorage.setItem("MyScreen",'moveToRankLecturer');
 	}
 
 	var waitFinish = 0;
@@ -263,7 +541,7 @@ myApp.controller('mainControler', function($scope,$location,$http,$route){
 		rankListAcademt = [];
 		var avgAcademyDiff = 0, avgFacultySec = 0, avgSocial = 0, avgUnion = 0, avgStudentChar = 0;
 		var indexC = 0;
-		database.child(localStorage.getItem("AcademySelected") + '/Faculty/' + localStorage.getItem("FacultySelected") 
+		database.child(sessionStorage.getItem("AcademySelected") + '/Faculty/' + sessionStorage.getItem("FacultySelected") 
 			+ '/Rating_faculty').once("value", function(snapshot){
 			var numOfChild = snapshot.numChildren();
 
@@ -318,8 +596,8 @@ myApp.controller('mainControler', function($scope,$location,$http,$route){
 		sleep(3000).then(() => {
 
 	    	if (waitFinish) {
-	    		document.getElementById("detailsAcademyId3").innerHTML = '&nbsp' + localStorage.getItem("AcademySelected");
-				document.getElementById("detailsFacultyId3").innerHTML = '&nbsp' + localStorage.getItem("FacultySelected");
+	    		document.getElementById("detailsAcademyId3").innerHTML = '&nbsp' + sessionStorage.getItem("AcademySelected");
+				document.getElementById("detailsFacultyId3").innerHTML = '&nbsp' + sessionStorage.getItem("FacultySelected");
 				document.getElementById("detailsdiffId3").innerHTML = '&nbsp' + (avgAcademyDiff / indexC).toFixed(2) ;
 				document.getElementById("detailscharacterId3").innerHTML = '&nbsp' + (avgStudentChar / indexC).toFixed(2)   ;
 				document.getElementById("detailsSocialId3").innerHTML = '&nbsp' + (avgSocial / indexC).toFixed(2) ;
@@ -342,7 +620,8 @@ myApp.controller('mainControler', function($scope,$location,$http,$route){
 		    }
 		});
 		
-		initPageAcademyView = true;
+		sessionStorage.setItem("initPageAcademyView","true");
+		sessionStorage.setItem("MyScreen",'moveToViewAcademy');
 	}
 
 
@@ -358,14 +637,14 @@ myApp.controller('mainControler', function($scope,$location,$http,$route){
 		rowH[0].style.backgroundColor = "rgb(51, 122, 183)" ;
 		rowH[0].style.color = "#000000" ;
 
-		//alert(localStorage.getItem("SemesterSelected") );
+		//alert(sessionStorage.getItem("SemesterSelected") );
 
 		waitFinish = 0;
 		var avgCourseLevel= 0, avgLecAtit = 0, avgMotivation = 0, avgLecInterst = 0;
 		var indexC = 0;
-		database.child(localStorage.getItem("AcademySelected") + '/Faculty/' + localStorage.getItem("FacultySelected") 
-			+ '/Course/' + localStorage.getItem("CourseSelected")  + '/' + localStorage.getItem("SemesterSelected")  
-			+ '/Lecturer/' + localStorage.getItem("LecturerSelected")  +
+		database.child(sessionStorage.getItem("AcademySelected") + '/Faculty/' + sessionStorage.getItem("FacultySelected") 
+			+ '/Course/' + sessionStorage.getItem("CourseSelected")  + '/' + sessionStorage.getItem("SemesterSelected")  
+			+ '/Lecturer/' + sessionStorage.getItem("LecturerSelected")  +
 			'/Rating').once("value", function(snapshot){
 			var numOfChild = snapshot.numChildren();
 			numOfRaitingLec = numOfChild;
@@ -418,12 +697,12 @@ myApp.controller('mainControler', function($scope,$location,$http,$route){
 		sleep(3000).then(() => {
 
 	    	if (waitFinish) {
-	    		document.getElementById("detailsAcademyId4").innerHTML = '&nbsp' + localStorage.getItem("AcademySelected");
+	    		document.getElementById("detailsAcademyId4").innerHTML = '&nbsp' + sessionStorage.getItem("AcademySelected");
 	    		//document.getElementById("detailsAcademyId4").textDecoration = "none";
-				document.getElementById("detailsFacultyId4").innerHTML = '&nbsp' + localStorage.getItem("FacultySelected");
-				document.getElementById("detailsLec4").innerHTML = '&nbsp' + localStorage.getItem("LecturerSelected");
-				document.getElementById("detailsCourse4").innerHTML = '&nbsp' + localStorage.getItem("CourseSelected");
-				document.getElementById("detailsSemester4").innerHTML = '&nbsp' + localStorage.getItem("SemesterSelected");
+				document.getElementById("detailsFacultyId4").innerHTML = '&nbsp' + sessionStorage.getItem("FacultySelected");
+				document.getElementById("detailsLec4").innerHTML = '&nbsp' + sessionStorage.getItem("LecturerSelected");
+				document.getElementById("detailsCourse4").innerHTML = '&nbsp' + sessionStorage.getItem("CourseSelected");
+				document.getElementById("detailsSemester4").innerHTML = '&nbsp' + sessionStorage.getItem("SemesterSelected");
 				document.getElementById("detailsRevNum4").innerHTML = '&nbsp' + numOfRaitingLec;
 				document.getElementById("detailsCourseLevel4").innerHTML = '&nbsp' + (avgCourseLevel / indexC).toFixed(2)   ;
 				document.getElementById("detailLecAttit4").innerHTML = '&nbsp' + (avgLecAtit / indexC).toFixed(2) ;
@@ -446,20 +725,26 @@ myApp.controller('mainControler', function($scope,$location,$http,$route){
 		    }
 		});
 		
-		initPageLecturerView = true;
+		sessionStorage.setItem("initPageLecturerView","true");
+		sessionStorage.setItem("MyScreen",'moveToViewLecturer');
 	}
 
 
 	$scope.moveToRankAcademy = function(view){
 		//alert(view);
-		if (localStorage.getItem("FacultySelected") != 'Select Faculty' 
-			&& localStorage.getItem("AcademySelected")  != 'Select Academy')
+		if (sessionStorage.getItem("FacultySelected") != 'Select Faculty' 
+			&& sessionStorage.getItem("AcademySelected")  != 'Select Academy')
 		{
-			$location.path(view);	
-			if (initPageAcademyRank){
-				//alert("hii");
-				$scope.initDetailsAcademy();
+			if (sessionStorage.getItem("MyScreen") == 'moveToRankAcademy')	{
+				if (sessionStorage.getItem("initPageAcademyRank") == "true"){
+					//alert("hii");
+					$scope.initDetailsAcademy();
+				}
+
+			} else {
+				initPages();
 			}
+			$location.path(view);
 		}
 		else {
 			alert("You must select Academy and Faculty");
@@ -468,13 +753,20 @@ myApp.controller('mainControler', function($scope,$location,$http,$route){
 	};
 
 	$scope.moveToViewAcademy = function(view){
-		if (localStorage.getItem("FacultySelected") != 'Select Faculty' 
-			&& localStorage.getItem("AcademySelected")  != 'Select Academy')
+		if (sessionStorage.getItem("FacultySelected") != 'Select Faculty' 
+			&& sessionStorage.getItem("AcademySelected")  != 'Select Academy')
 		{
-			$location.path(view);
-			if (initPageAcademyView){
-				$scope.initDetailsAvgTableAcademy()
+			if (sessionStorage.getItem("MyScreen") == 'moveToViewAcademy')	{
+				
+				if (sessionStorage.getItem("initPageAcademyView") == "true" ){
+					$scope.initDetailsAvgTableAcademy()
+				}
 			}
+			else {
+				initPages();
+			}
+
+			$location.path(view);
 		}
 		else {
 			alert("You must select Academy and Faculty");
@@ -483,19 +775,20 @@ myApp.controller('mainControler', function($scope,$location,$http,$route){
 
 	$scope.moveToRankLecturer = function(view){
 		//alert(view);
-		if (SemesterSelected == "All"){
-			alert("Could not choose 'All' while ranking (only view)");
-		}
-		else if (localStorage.getItem("CourseSelected") != 'Select Course' 
-			&& localStorage.getItem("FacultySelected") != 'Select Faculty'
-		 	&& localStorage.getItem("AcademySelected") != 'Select Academy'
-			&& localStorage.getItem("SemesterSelected") != 'Select Semester' 
-			 &&	localStorage.getItem("LecturerSelected") != 'Select Lecturer')
+	   if (sessionStorage.getItem("CourseSelected") != 'Select Course' 
+			&& sessionStorage.getItem("FacultySelected") != 'Select Faculty'
+		 	&& sessionStorage.getItem("AcademySelected") != 'Select Academy'
+			&& sessionStorage.getItem("SemesterSelected") != 'Select Semester' 
+			 &&	sessionStorage.getItem("LecturerSelected") != 'Select Lecturer')
 		{
-			$location.path(view);
-			if (initPageAcademyView){
-				$scope.initDetailsLecturer();
+			if (sessionStorage.getItem("MyScreen") == 'moveToRankLecturer')	{
+				if (sessionStorage.getItem("initPageLecturerRank") == "true"){
+					$scope.initDetailsLecturer();
+				}
+			} else {
+				initPages();
 			}
+			$location.path(view);
 		}
 		else {
 			alert("You must select Academy, Faculty, Course, Semester and Lecturer");
@@ -505,23 +798,24 @@ myApp.controller('mainControler', function($scope,$location,$http,$route){
 
 	$scope.moveToViewLecturer = function(view){
 		//alert(view);
-		console.log(localStorage.getItem("CourseSelected"));
-		console.log(localStorage.getItem("FacultySelected"));
-		console.log(localStorage.getItem("AcademySelected"));
-		console.log(localStorage.getItem("SemesterSelected"));
-		console.log(localStorage.getItem("LecturerSelected"));
 
-		if (localStorage.getItem("CourseSelected") != 'Select Course' 
-			&& localStorage.getItem("FacultySelected") != 'Select Faculty'
-		 	&& localStorage.getItem("AcademySelected") != 'Select Academy'
-			&& localStorage.getItem("SemesterSelected") != 'Select Semester' 
-			 &&	localStorage.getItem("LecturerSelected") != 'Select Lecturer')
+		if (sessionStorage.getItem("CourseSelected") != 'Select Course' 
+			&& sessionStorage.getItem("FacultySelected") != 'Select Faculty'
+		 	&& sessionStorage.getItem("AcademySelected") != 'Select Academy'
+			&& sessionStorage.getItem("SemesterSelected") != 'Select Semester' 
+			 &&	sessionStorage.getItem("LecturerSelected") != 'Select Lecturer')
 		{
-			$location.path(view);
-			if (initPageLecturerView){
-				$scope.initDetailsAvgTableLecturer();
-			}
 
+			if (sessionStorage.getItem("MyScreen") == 'moveToViewLecturer')	{
+				$location.path(view);
+				if (sessionStorage.getItem("initPageLecturerView") == "true" ){
+					$scope.initDetailsAvgTableLecturer();
+				}
+			}
+			else {
+				initPages();
+			}
+			$location.path(view);
 		}
 		else {
 			alert("You must select Academy, Faculty, Course, Semester and Lecturer");
@@ -579,13 +873,16 @@ myApp.controller('RankLecturerCont', function($scope,$location){
 			few_words : FawWords
 		};
 
-		var newDBref = database.child(localStorage.getItem("AcademySelected") + '/Faculty/' 
-			+ localStorage.getItem("FacultySelected") + '/Rating_faculty').push();
+		var newDBref = database.child(sessionStorage.getItem("AcademySelected") + '/Faculty/' 
+			+ sessionStorage.getItem("FacultySelected") + '/Rating_faculty').push();
 		newDBref.set(facultyRank);
 		alert("Your ranking has beed sent");
-		initPageAcademyRank = false;
-		initPageLecturerRank = false;
+		sessionStorage.setItem("initPageAcademyRank","false");
+		//sessionStorage.setItem("initPageLecturerRank","false");
+		//initPageAcademyRank = false;
+		//initPageLecturerRank = false;
 		//initAllDropDown(1);
+		//loadDataFromDB();
 		$location.path('/');
 
 	};
@@ -634,17 +931,20 @@ myApp.controller('RankLecturerCont', function($scope,$location){
 			few_words : FawWords
 		};
 
-		var newDBref = database.child(localStorage.getItem("AcademySelected") + '/Faculty/' + 
-			localStorage.getItem("FacultySelected") + '/Course/' + 
-			localStorage.getItem("CourseSelected") + '/' +
-			localStorage.getItem("SemesterSelected")  + '/Lecturer/' 
-			+ localStorage.getItem("LecturerSelected") + 
+		var newDBref = database.child(sessionStorage.getItem("AcademySelected") + '/Faculty/' + 
+			sessionStorage.getItem("FacultySelected") + '/Course/' + 
+			sessionStorage.getItem("CourseSelected") + '/' +
+			sessionStorage.getItem("SemesterSelected")  + '/Lecturer/' 
+			+ sessionStorage.getItem("LecturerSelected") + 
 			'/Rating').push();
 		newDBref.set(LecturerRank);
 		alert("Your ranking has beed sent");
-		initPageAcademyRank = false;
-		initPageLecturerRank = false;
+		//sessionStorage.setItem("initPageAcademyRank","false");
+		sessionStorage.setItem("initPageLecturerRank","false");
+		//initPageAcademyRank = false;
+		//initPageLecturerRank = false;
 		//initAllDropDown(1);
+		//loadDataFromDB();
 		$location.path('/');
 
 	};
@@ -705,6 +1005,11 @@ myApp.config(function ($routeProvider, $locationProvider){
 		{
 		controller: 'mainControler',
 		templateUrl: 'partials/CourseDetail.html'
+		})
+	.when('/contactUs',
+		{
+		controller: 'mainControler',
+		templateUrl: 'partials/contact.html'
 		})
 		.otherwise({ redirectTo: '/'});
 
