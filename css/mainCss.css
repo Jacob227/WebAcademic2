@@ -1,0 +1,37 @@
+
+body {
+    padding-top: 70px; 
+}
+
+.thumbnail img {
+    width: 100%;
+}
+
+
+.panel a.btn{
+	display: inline-block;
+	margin-left: 10px;
+	margin-bottom: 10px;
+}
+
+
+.ratings {
+    padding-right: 10px;
+    padding-left: 10px;
+    color: #d17581;
+}
+
+.thumbnail {
+    padding: 0;
+}
+
+.thumbnail .caption-full {
+    padding: 9px;
+    color: #333;
+}
+
+
+
+footer {
+    margin: 50px 0;
+}

@@ -1,11 +1,5 @@
 var myApp = angular.module('myApp', ['ngRoute', 'firebase']);
 
-//var AcademySelected = 'Select Academy';
-//var FacultySelected = 'Select Faculty';
-//var CourseSelected = 'Select Course';
-//var SemesterSelected = 'Select Semester';
-//var LecturerSelected = 'Select Lecturer';
-//var initVarsDet = 0;
 
 var jQuerySelectedIdList = ['#dropdownAcademy', '#dropdownFaculty', '#dropdownCourse', '#dropdownSem', '#dropdownLec' ];
 var selectedToAddList = ['Select Academy', 'Select Faculty', 'Select Course', 'Select Semester','Select Lecturer'];
@@ -29,7 +23,6 @@ var initPageAcademyView = "false";
 
  function initVars() {
  	
- 		//sessionStorage.setItem("initVarsDet","1");
  		sessionStorage.setItem("AcademySelected",'Select Academy');
  		sessionStorage.setItem("FacultySelected",'Select Faculty');
  		sessionStorage.setItem("CourseSelected",'Select Course');
@@ -66,10 +59,8 @@ var initPageAcademyView = "false";
  {
  		initAllDropDown(1);
 		snapshot.forEach(function(childSnapshot) {
-			//alert(childSnapshot.key);
 			$('#dropdownFaculty').append('<option value="' + childSnapshot.key + '">' + childSnapshot.key +'</option>');
 			$(".selectpicker").selectpicker('refresh');
-			//alert(childSnapshot.key);
 		});
 		
 }
@@ -78,10 +69,8 @@ var initPageAcademyView = "false";
  {
  		initAllDropDown(2);
 		snapshot.forEach(function(childSnapshot) {
-			//alert(childSnapshot.key);
 			$('#dropdownCourse').append('<option>'+ childSnapshot.key +'</option>');
 			$(".selectpicker").selectpicker('refresh');
-			//alert(childSnapshot.key);
 		});
 		
 }
@@ -90,12 +79,9 @@ var initPageAcademyView = "false";
  {
  		initAllDropDown(3);
  		snapshotAllSemesterSave = snapshot;
- 		//$('#dropdownSem').append('<option>All</option>');
 		snapshot.forEach(function(childSnapshot) {
-			//alert(childSnapshot.key);
 			$('#dropdownSem').append('<option>'+ childSnapshot.key +'</option>');
 			$(".selectpicker").selectpicker('refresh');
-			//alert(childSnapshot.key);
 		});
 		
 }
@@ -108,10 +94,8 @@ var initPageAcademyView = "false";
 		if (sessionStorage.getItem("SemesterSelected") == 'All') {
 			listOfAllLecturer = [];
 			snapshotAllSemesterSave.forEach(function(childSnapshot) {
-				//initAllDropDown(4);
 				childSnapshot.child("Lecturer").forEach(function(childSnapshotSem) {
 					var lec = childSnapshotSem.key;
-					//alert(lec);
 					if ($.inArray(lec,listOfAllLecturer) == -1){
 						listOfAllLecturer.push(lec);
 						$('#dropdownLec').append('<option>'+ lec +'</option>');
@@ -123,37 +107,28 @@ var initPageAcademyView = "false";
 		}
 		else {
 			snapshot.forEach(function(childSnapshot) {
-				//alert(childSnapshot.key);
 				$('#dropdownLec').append('<option>'+ childSnapshot.key +'</option>');
 				$(".selectpicker").selectpicker('refresh');
 			});
 		}
-		//sessionStorage.setItem("refreshScreen", "0");
 		
 }
 
 
 var loadDataFromDB = function() {
-	//alert("in loadDataFromDB");
+
 	if (performance.navigation.type == 1) {
 	  console.info( "This page is reloaded" );
-	  //database = firebase.database().ref().child('Academy');
 	}
 	else {
 		initVars();
 	}
 
-	//TODO - add first time
-	//sessionStorage.setItem("refreshScreen", "1"); 
-	 database = firebase.database().ref().child('Academy');
-	// alert(sessionStorage.getItem("AcademySelected"));
-	//alert(sessionStorage.getItem("FacultySelected"));
-	//var e  = document.getElementById("dropdownAcademy");
+	database = firebase.database().ref().child('Academy');
 	database.once("value", function(snapshot){
 		snapshot.forEach(function(childSnapshot) {
 			$('#dropdownAcademy').append('<option>'+ childSnapshot.key +'</option>');
 			$(".selectpicker").selectpicker('refresh');
-			//alert(childSnapshot.key);
 		});
 		
 	});
@@ -164,7 +139,6 @@ var loadDataFromDB = function() {
 		{
 			database.child(sessionStorage.getItem("AcademySelected") + '/Faculty').once("value",onClickAcademy);
 		}
-		//alert(selected);
 	});
 
 	$("#dropdownFaculty").on('changed.bs.select', function(e, clickedIndex, newValue, oldValue){
@@ -176,7 +150,6 @@ var loadDataFromDB = function() {
 				sessionStorage.getItem("FacultySelected") + '/Course').once("value",onClickFaculty);
 
 		}
-		//alert(selected);
 	});
 
 	$("#dropdownCourse").on('changed.bs.select', function(e, clickedIndex, newValue, oldValue){
@@ -189,13 +162,11 @@ var loadDataFromDB = function() {
 				+ '/Course/' +sessionStorage.getItem("CourseSelected") ).once("value",onClickCourse);
 
 		}
-		//alert(selected);
 	});
 
 	$("#dropdownSem").on('changed.bs.select', function(e, clickedIndex, newValue, oldValue){
 		sessionStorage.setItem("SemesterSelected", $(e.currentTarget).val());
 
-		//alert(sessionStorage.getItem("SemesterSelected"));
 		if (sessionStorage.getItem("CourseSelected") != 'Select Course' && sessionStorage.getItem("FacultySelected") != 'Select Faculty' 
 			&& sessionStorage.getItem("AcademySelected") != 'Select Academy'
 			&& sessionStorage.getItem("SemesterSelected") != 'Select Semester')
@@ -204,18 +175,12 @@ var loadDataFromDB = function() {
 			 + '/Course/' + sessionStorage.getItem("CourseSelected") +
 				'/' + sessionStorage.getItem("SemesterSelected") + '/Lecturer').once("value",onClickSemester);
 		}
-		//alert(selected);
 	});
 
 	$("#dropdownLec").on('changed.bs.select', function(e, clickedIndex, newValue, oldValue){
 		sessionStorage.setItem("LecturerSelected", $(e.currentTarget).val());
 	});
 
-	if (performance.navigation.type == 1) {
-		console.info( "This page is reloaded 222" );
-		//$('#dropdownAcademy').selectpicker('val', sessionStorage.getItem("AcademySelected"));
-		//$(".selectpicker").selectpicker('refresh');
-	}
 }
 
 loadDataFromDB();
@@ -255,7 +220,6 @@ myApp.controller('mainControler', function($scope,$location,$http,$route){
 
 		if (firstName1!= '' && lastName1 != '' && Email1 != ''
 			&& Subject1 != '' && Message1 != '') {
-			//window.open('mailto:test@example.com');
 			var emailToSent = {
 				firstName : firstName1,
 				lastName : lastName1,
@@ -292,10 +256,6 @@ myApp.controller('mainControler', function($scope,$location,$http,$route){
 					document.getElementById("Syllabus").innerHTML = "Syllabus:&nbsp" + snapshot.val().syllabus;
 					sessionStorage.setItem("initPageSyllabus","true");
 					sessionStorage.setItem("MyScreen",'navCourseDet');
-					//var table = document.getElementById("tableId");
-					//var rowCount = table.rows.length; while(--rowCount) table.deleteRow(rowCount); 
-					//	childSnapshot.val().academy_difficulty;
-					//alert(childSnapshot.key);
 
 				});
 	}
@@ -329,7 +289,6 @@ myApp.controller('mainControler', function($scope,$location,$http,$route){
 			snapshot.forEach(function(childSnapshot) {
 				$('#dropdownAcademy1').append('<option>'+ childSnapshot.key +'</option>');
 				$(".selectpicker").selectpicker('refresh');
-				//alert(childSnapshot.key);
 			});
 			
 		});
@@ -355,12 +314,10 @@ myApp.controller('mainControler', function($scope,$location,$http,$route){
 
 					$('#dropdownFaculty1').append('<option>'+ childSnapshot.key +'</option>');
 					$(".selectpicker").selectpicker('refresh');
-					//alert(childSnapshot.key);
 					});
 				});
-				//database.child(sessionStorage.getItem("AcademySelected") + '/Faculty').once("value",onClickAcademy);
 			}
-			//alert(selected);
+
 		});
 
 		$("#dropdownFaculty1").on('changed.bs.select', function(e, clickedIndex, newValue, oldValue){
@@ -380,23 +337,16 @@ myApp.controller('mainControler', function($scope,$location,$http,$route){
 
 					$('#dropdownCourse1').append('<option>'+ childSnapshot.key +'</option>');
 					$(".selectpicker").selectpicker('refresh');
-					//alert(childSnapshot.key);
 					});
 				});
-				//database.child(sessionStorage.getItem("AcademySelected") + '/Faculty/' + 
-				//	sessionStorage.getItem("FacultySelected") + '/Course').once("value",onClickFaculty);
-
 			}
-			//alert(selected);
+
 		});
 
 		$("#dropdownCourse1").on('changed.bs.select', function(e, clickedIndex, newValue, oldValue){
 			CourseSel = $(e.currentTarget).val();
-			//alert(selected);
 		});
 
-
-			//alert(document.getElementById("Fname4").innerHTML);
 	}
 
 	$scope.SendAddLec = function () {	
@@ -498,7 +448,7 @@ myApp.controller('mainControler', function($scope,$location,$http,$route){
 	}
 
 	$scope.initDetailsAcademy = function () {
-		//alert(sessionStorage.getItem("AcademySelected"));
+
 		document.getElementById("detailsAcademyId1").innerHTML = '&nbsp' + sessionStorage.getItem("AcademySelected");
 		document.getElementById("detailsFacultyId1").innerHTML = '&nbsp' + sessionStorage.getItem("FacultySelected");
 		$('input:radio[id=ch1]').prop('checked', true);
@@ -512,6 +462,7 @@ myApp.controller('mainControler', function($scope,$location,$http,$route){
 	}
 
 	$scope.initDetailsLecturer = function () {
+
 		document.getElementById("detailsAcademyId2").innerHTML = '&nbsp' + sessionStorage.getItem("AcademySelected");
 		document.getElementById("detailsFacultyId2").innerHTML = '&nbsp' + sessionStorage.getItem("FacultySelected");
 		document.getElementById("detailsSemesterId2").innerHTML = '&nbsp' + sessionStorage.getItem("SemesterSelected");
@@ -531,7 +482,6 @@ myApp.controller('mainControler', function($scope,$location,$http,$route){
 	$scope.initDetailsAvgTableAcademy = function () {
 
 		var table = document.getElementById("tableA");
-
 		var rowCount = table.rows.length; while(--rowCount) table.deleteRow(rowCount); 
 		var rowH = document.getElementById("tableA").rows;
 		rowH[0].style.backgroundColor = "rgb(51, 122, 183)" ;
@@ -548,7 +498,6 @@ myApp.controller('mainControler', function($scope,$location,$http,$route){
 			snapshot.forEach(function(childSnapshot) {
 
 				rankListAcademt.push(childSnapshot);
-				//alert("innn");
 				avgAcademyDiff += childSnapshot.val().academy_difficulty;
 				avgFacultySec += childSnapshot.val().faculty_secretary;
 				avgSocial += childSnapshot.val().social_life;
@@ -629,15 +578,10 @@ myApp.controller('mainControler', function($scope,$location,$http,$route){
 
 		var numOfRaitingLec = 0;
 		var table = document.getElementById("tableB");
-
 		var rowCount = table.rows.length; while(--rowCount) table.deleteRow(rowCount); 
 		var rowH = document.getElementById("tableB").rows;
-
-
 		rowH[0].style.backgroundColor = "rgb(51, 122, 183)" ;
 		rowH[0].style.color = "#000000" ;
-
-		//alert(sessionStorage.getItem("SemesterSelected") );
 
 		waitFinish = 0;
 		var avgCourseLevel= 0, avgLecAtit = 0, avgMotivation = 0, avgLecInterst = 0;
@@ -648,17 +592,15 @@ myApp.controller('mainControler', function($scope,$location,$http,$route){
 			'/Rating').once("value", function(snapshot){
 			var numOfChild = snapshot.numChildren();
 			numOfRaitingLec = numOfChild;
-			//if ()
+
 			snapshot.forEach(function(childSnapshot) {
 
-				//alert("innn");
 				avgCourseLevel += childSnapshot.val().course_level;
 				avgLecAtit += childSnapshot.val().attitude_lecturer_student;
 				avgMotivation += childSnapshot.val().ability_to_teach;
 				avgLecInterst += childSnapshot.val().teacher_interesting;
 				indexC++;
 				var row = table.insertRow(indexC);
-
 				row.insertCell(0).innerHTML = indexC;
 
 				rowH[indexC].cells[0].style.backgroundColor = "rgb(51, 122, 183)";
@@ -731,13 +673,12 @@ myApp.controller('mainControler', function($scope,$location,$http,$route){
 
 
 	$scope.moveToRankAcademy = function(view){
-		//alert(view);
+
 		if (sessionStorage.getItem("FacultySelected") != 'Select Faculty' 
 			&& sessionStorage.getItem("AcademySelected")  != 'Select Academy')
 		{
 			if (sessionStorage.getItem("MyScreen") == 'moveToRankAcademy')	{
 				if (sessionStorage.getItem("initPageAcademyRank") == "true"){
-					//alert("hii");
 					$scope.initDetailsAcademy();
 				}
 
@@ -774,7 +715,6 @@ myApp.controller('mainControler', function($scope,$location,$http,$route){
 	};
 
 	$scope.moveToRankLecturer = function(view){
-		//alert(view);
 	   if (sessionStorage.getItem("CourseSelected") != 'Select Course' 
 			&& sessionStorage.getItem("FacultySelected") != 'Select Faculty'
 		 	&& sessionStorage.getItem("AcademySelected") != 'Select Academy'
@@ -797,7 +737,6 @@ myApp.controller('mainControler', function($scope,$location,$http,$route){
 	};
 
 	$scope.moveToViewLecturer = function(view){
-		//alert(view);
 
 		if (sessionStorage.getItem("CourseSelected") != 'Select Course' 
 			&& sessionStorage.getItem("FacultySelected") != 'Select Faculty'
@@ -836,12 +775,11 @@ myApp.controller('RankLecturerCont', function($scope,$location){
 		var social_life1 =  parseInt($('input[name="gender5"]:checked').val());
 
 		var FawWords = $('#commentFewWord').val();
-		//alert(typeof academy_difficulty1);
 		var userName = '';
 		var annonymos1 = true;
 		if ($('#AnnonymosCheck').is(":checked")){
 			userName = 'Annonymos_' + Math.floor((Math.random() * 100000) + 1);
-		} else { //TODO - check if the user is already exist in DB 
+		} else { 
 			userName = $('#textName').val();
 			annonymos1 = false;
 		}
@@ -859,7 +797,6 @@ myApp.controller('RankLecturerCont', function($scope,$location){
 		} 
 
 		today = dd+'-'+mm+'-'+yyyy;
-		//alert(today);
 
 		var facultyRank = {
 			academy_difficulty: academy_difficulty1,
@@ -878,11 +815,6 @@ myApp.controller('RankLecturerCont', function($scope,$location){
 		newDBref.set(facultyRank);
 		alert("Your ranking has beed sent");
 		sessionStorage.setItem("initPageAcademyRank","false");
-		//sessionStorage.setItem("initPageLecturerRank","false");
-		//initPageAcademyRank = false;
-		//initPageLecturerRank = false;
-		//initAllDropDown(1);
-		//loadDataFromDB();
 		$location.path('/');
 
 	};
@@ -895,18 +827,17 @@ myApp.controller('RankLecturerCont', function($scope,$location){
 		var teacher_interesting1 =  parseInt($('input[name="gender4"]:checked').val());
 
 		var FawWords = $('#commentFewWord').val();
-		//alert(typeof academy_difficulty1);
 		var userName = '';
 		var annonymos1 = true;
 		if ($('#AnnonymosCheck').is(":checked")){
 			userName = 'Annonymos_' + Math.floor((Math.random() * 100000) + 1);
-		} else { //TODO - check if the user is already exist in DB 
+		} else { 
 			userName = $('#textName').val();
 			annonymos1 = false;
 		}
 		var today = new Date();
 		var dd = today.getDate();
-		var mm = today.getMonth()+1; //January is 0!
+		var mm = today.getMonth()+1; 
 		var yyyy = today.getFullYear();
 
 		if(dd<10) {
@@ -916,9 +847,7 @@ myApp.controller('RankLecturerCont', function($scope,$location){
 		if(mm<10) {
 		    mm='0'+mm
 		} 
-
 		today = dd+'-'+mm+'-'+yyyy;
-		//alert(today);
 
 		var LecturerRank = {
 			course_level: course_level1,
@@ -939,12 +868,7 @@ myApp.controller('RankLecturerCont', function($scope,$location){
 			'/Rating').push();
 		newDBref.set(LecturerRank);
 		alert("Your ranking has beed sent");
-		//sessionStorage.setItem("initPageAcademyRank","false");
 		sessionStorage.setItem("initPageLecturerRank","false");
-		//initPageAcademyRank = false;
-		//initPageLecturerRank = false;
-		//initAllDropDown(1);
-		//loadDataFromDB();
 		$location.path('/');
 
 	};
@@ -954,9 +878,6 @@ myApp.controller('RankLecturerCont', function($scope,$location){
 
 myApp.controller('AcademyControler', function($scope){
 
-
-	
-	//console.log($scope);
 });
 
 myApp.config(function ($routeProvider, $locationProvider){
